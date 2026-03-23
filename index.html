@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0A0A0F">
+<title>MAYO Infrastructure</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0A0A0F;--bg2:#111118;--bg3:#16161F;--bg4:#1C1C28;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --cyan:#00D4FF;--purple:#9B6DFF;--magenta:#E040FB;
+  --green:#00E5A0;--amber:#FFB800;--red:#FF4D6A;
+  --text:#F0F0F8;--text2:#9090A8;--text3:#5A5A72;
+  --grad:linear-gradient(135deg,#00D4FF,#9B6DFF,#E040FB);
+  --grad2:linear-gradient(135deg,#9B6DFF,#6040C0);
+  --glow:0 0 30px rgba(155,109,255,0.25);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:radial-gradient(ellipse at 20% 20%,rgba(0,212,255,0.06) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(155,109,255,0.08) 0%,transparent 60%),var(--bg);}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse at center,black 40%,transparent 80%);}
+.login-container{width:100%;max-width:420px;padding:24px;position:relative;z-index:2;}
+.login-logo{text-align:center;margin-bottom:40px;}
+.login-logo svg{display:block;margin:0 auto 20px;}
+.login-logo h1{font-family:'Syne',sans-serif;font-size:28px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.login-logo p{color:var(--text2);font-size:13px;font-weight:500;margin-top:6px;}
+.login-card{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:32px;box-shadow:0 24px 80px rgba(0,0,0,0.5),var(--glow);}
+.form-group{margin-bottom:18px;}
+.form-group label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:8px;}
+.form-input{width:100%;padding:13px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:all 0.2s;}
+.form-input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(155,109,255,0.12);}
+.form-input::placeholder{color:var(--text3);}
+.btn-primary{width:100%;padding:14px;background:var(--grad2);border:none;border-radius:10px;color:white;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:all 0.2s;margin-top:8px;}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:var(--glow);}
+.login-footer{text-align:center;margin-top:20px;font-size:12px;color:var(--text3);}
+.login-footer a{color:var(--purple);text-decoration:none;}
+.login-screen.hidden{display:none;}
+.app-container{display:none;min-height:100vh;}
+.app-container.active{display:flex;}
+.sidebar{width:240px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:transform 0.3s;}
+.sidebar-header{padding:18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.sidebar-logo{width:34px;height:34px;display:flex;align-items:center;justify-content:center;}
+.sidebar-brand h2{font-family:'Syne',sans-serif;font-size:15px;font-weight:900;color:var(--text);}
+.sidebar-brand span{font-size:10px;color:var(--text3);font-weight:500;}
+.active-client-banner{margin:10px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:10px 12px;cursor:pointer;transition:all 0.2s;}
+.active-client-banner:hover{border-color:var(--purple);}
+.acb-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:4px;}
+.acb-row{display:flex;align-items:center;justify-content:space-between;}
+.acb-name{font-size:13px;font-weight:700;color:var(--text);}
+.acb-right{display:flex;align-items:center;gap:6px;}
+.acb-avatar{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;}
+.acb-switch{font-size:10px;color:var(--purple);font-weight:600;}
+.sidebar-nav{flex:1;padding:10px;overflow-y:auto;}
+.nav-section{margin-bottom:20px;}
+.nav-section-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);padding:0 10px;margin-bottom:6px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;transition:all 0.15s;font-size:13px;font-weight:500;color:var(--text2);position:relative;}
+.nav-item:hover{background:var(--bg3);color:var(--text);}
+.nav-item.active{background:rgba(155,109,255,0.1);color:var(--purple);font-weight:600;}
+.nav-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:2px;height:16px;background:var(--grad);border-radius:0 2px 2px 0;}
+.nav-icon{font-size:15px;}
+.nav-badge{margin-left:auto;background:var(--purple);color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;}
+.nav-item.coming-soon{opacity:0.35;cursor:default;}
+.coming-tag{margin-left:auto;font-size:8px;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;color:var(--text3);background:var(--bg4);padding:2px 5px;border-radius:4px;}
+.sidebar-user{padding:12px 14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.user-avatar{width:30px;height:30px;border-radius:8px;background:var(--grad2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:white;}
+.user-info .name{font-size:12px;font-weight:700;}
+.user-info .role{font-size:10px;color:var(--text3);font-weight:500;}
+.logout-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;margin-left:auto;padding:4px;transition:color 0.2s;}
+.logout-btn:hover{color:var(--red);}
+.main-content{flex:1;margin-left:240px;min-height:100vh;}
+.topbar{padding:14px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,15,0.8);backdrop-filter:blur(12px);position:sticky;top:0;z-index:50;}
+.topbar h1{font-family:'Syne',sans-serif;font-size:20px;font-weight:900;letter-spacing:-0.3px;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.client-pill{display:flex;align-items:center;gap:7px;padding:5px 12px 5px 6px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;cursor:pointer;transition:all 0.2s;}
+.client-pill:hover{border-color:var(--purple);}
+.client-pill-avatar{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;}
+.client-pill-name{font-size:12px;font-weight:600;}
+.client-pill-arrow{font-size:10px;color:var(--text3);}
+.status-badge{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--green);background:rgba(0,229,160,0.08);padding:5px 12px;border-radius:20px;border:1px solid rgba(0,229,160,0.15);}
+.status-dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.page-content{padding:28px;}
+.page{display:none;animation:fadeIn 0.2s;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);z-index:500;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.active{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;width:100%;max-width:520px;padding:28px;box-shadow:0 24px 80px rgba(0,0,0,0.6);animation:fadeIn 0.2s;max-height:90vh;overflow-y:auto;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.modal-header h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:900;}
+.modal-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:20px;padding:4px;transition:color 0.2s;line-height:1;}
+.modal-close:hover{color:var(--text);}
+.client-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;max-height:320px;overflow-y:auto;}
+.client-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all 0.15s;}
+.client-item:hover{border-color:var(--border2);}
+.client-item.selected{border-color:var(--purple);background:rgba(155,109,255,0.06);}
+.ci-avatar{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:white;flex-shrink:0;}
+.ci-info{flex:1;min-width:0;}
+.ci-name{font-size:14px;font-weight:700;}
+.ci-meta{font-size:11px;color:var(--text3);font-weight:500;margin-top:2px;}
+.ci-actions{display:flex;gap:5px;}
+.ci-btn{background:none;border:1px solid var(--border);border-radius:6px;color:var(--text3);cursor:pointer;font-size:11px;padding:4px 8px;transition:all 0.15s;font-family:inherit;}
+.ci-btn:hover{color:var(--text);border-color:var(--border2);}
+.ci-btn.danger:hover{color:var(--red);border-color:rgba(255,77,106,0.3);}
+.ci-check{color:var(--purple);font-size:18px;font-weight:900;flex-shrink:0;}
+.btn-add-client{width:100%;padding:11px;background:transparent;border:1px dashed var(--border2);border-radius:10px;color:var(--purple);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:inherit;}
+.btn-add-client:hover{background:rgba(155,109,255,0.06);border-color:var(--purple);}
+.client-form{display:none;}
+.client-form.show{display:block;}
+.client-list-view.hide{display:none;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.form-field{display:flex;flex-direction:column;gap:6px;}
+.form-field label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);}
+.niche-select{width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:all 0.2s;}
+.niche-select:focus{border-color:var(--purple);}
+.platform-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.platform-toggle{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all 0.15s;font-family:inherit;}
+.platform-toggle.on{background:rgba(155,109,255,0.1);border-color:var(--purple);color:var(--purple);}
+.color-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.color-swatch{width:24px;height:24px;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:all 0.15s;}
+.color-swatch.selected{border-color:white;transform:scale(1.2);}
+.form-actions{display:flex;gap:8px;}
+.btn-save{flex:1;padding:11px;background:var(--grad2);border:none;border-radius:10px;color:white;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;}
+.btn-save:hover{box-shadow:var(--glow);}
+.btn-cancel{padding:11px 18px;background:transparent;border:1px solid var(--border2);border-radius:10px;color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px;transition:all 0.2s;}
+.stat-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3);}
+.stat-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;font-weight:700;margin-bottom:8px;}
+.stat-value{font-family:'Syne',sans-serif;font-size:28px;font-weight:900;letter-spacing:-1px;}
+.stat-value.c{color:var(--cyan);}.stat-value.p{color:var(--purple);}.stat-value.g{color:var(--green);}.stat-value.m{color:var(--magenta);}
+.stat-change{font-size:11px;font-weight:600;margin-top:4px;color:var(--green);}
+.command-section{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:28px;position:relative;overflow:hidden;}
+.command-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--grad);opacity:0.5;}
+.command-section h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:900;margin-bottom:4px;}
+.command-section p{font-size:12px;color:var(--text2);font-weight:500;margin-bottom:16px;}
+.command-input-wrapper{display:flex;gap:10px;align-items:flex-end;}
+.command-input-area{flex:1;}
+.command-textarea{width:100%;padding:13px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;font-family:inherit;font-weight:500;resize:none;outline:none;min-height:50px;max-height:120px;transition:border-color 0.2s;}
+.command-textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(155,109,255,0.08);}
+.command-textarea::placeholder{color:var(--text3);font-weight:400;}
+.upload-area{border:1px dashed var(--border2);border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all 0.2s;margin-top:10px;background:var(--bg3);}
+.upload-area:hover{border-color:var(--purple);background:rgba(155,109,255,0.04);}
+.upload-area input{display:none;}
+.upload-preview{display:flex;align-items:center;gap:10px;flex:1;}
+.upload-preview img{width:34px;height:34px;border-radius:6px;object-fit:cover;}
+.upload-text{font-size:12px;color:var(--text2);font-weight:500;}
+.upload-text span{color:var(--text3);font-size:11px;display:block;margin-top:1px;}
+.clear-img{background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;margin-left:auto;padding:4px;transition:color 0.2s;}
+.clear-img:hover{color:var(--red);}
+.platform-selector{display:flex;gap:6px;margin-top:10px;}
+.platform-chip{padding:5px 12px;border-radius:16px;font-size:11px;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all 0.15s;font-family:inherit;}
+.platform-chip.active{background:rgba(155,109,255,0.1);border-color:var(--purple);color:var(--purple);}
+.quick-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.quick-action{padding:5px 10px;border-radius:6px;font-size:10px;font-weight:600;background:var(--bg4);border:1px solid var(--border);color:var(--text3);cursor:pointer;transition:all 0.15s;font-family:inherit;}
+.quick-action:hover{color:var(--purple);border-color:rgba(155,109,255,0.3);}
+.command-buttons{display:flex;flex-direction:column;gap:8px;}
+.btn-voice{width:50px;height:50px;border-radius:12px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all 0.2s;}
+.btn-voice:hover{border-color:var(--magenta);color:var(--magenta);}
+.btn-voice.recording{background:rgba(224,64,251,0.1);border-color:var(--magenta);color:var(--magenta);animation:rec-pulse 1.5s infinite;}
+@keyframes rec-pulse{0%,100%{box-shadow:0 0 0 0 rgba(224,64,251,0.3);}50%{box-shadow:0 0 0 8px rgba(224,64,251,0);}}
+.btn-send{width:50px;height:50px;border-radius:12px;border:none;background:var(--grad2);color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s;}
+.btn-send:hover{transform:translateY(-1px);box-shadow:var(--glow);}
+.btn-send:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.ai-response-box{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px;margin-top:14px;display:none;animation:fadeIn 0.3s;}
+.ai-response-box.show{display:block;}
+.ai-response-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.ai-badge{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--purple);background:rgba(155,109,255,0.1);border:1px solid rgba(155,109,255,0.2);padding:3px 8px;border-radius:6px;}
+.ai-caption{font-size:13px;font-weight:500;line-height:1.7;color:var(--text);white-space:pre-wrap;}
+.ai-hashtags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.hashtag{font-size:11px;font-weight:600;color:var(--cyan);background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15);padding:3px 10px;border-radius:12px;}
+.ai-actions{display:flex;gap:8px;margin-top:14px;}
+.ai-btn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border2);background:var(--bg4);color:var(--text2);font-family:inherit;transition:all 0.15s;}
+.ai-btn:hover{color:var(--text);}
+.ai-btn.primary{background:var(--grad2);border:none;color:white;}
+.ai-btn.primary:hover{box-shadow:var(--glow);}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.section-header h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:900;}
+.view-all{font-size:12px;font-weight:600;color:var(--purple);cursor:pointer;background:none;border:none;font-family:inherit;}
+.posts-list{display:flex;flex-direction:column;gap:8px;margin-bottom:28px;}
+.post-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;transition:all 0.2s;cursor:pointer;}
+.post-card:hover{border-color:var(--border2);box-shadow:0 4px 16px rgba(0,0,0,0.3);}
+.post-thumb{width:42px;height:42px;border-radius:10px;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.post-info{flex:1;min-width:0;}
+.post-title{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.post-meta{font-size:11px;color:var(--text3);font-weight:500;margin-top:2px;display:flex;gap:10px;}
+.post-status{padding:3px 10px;border-radius:16px;font-size:10px;font-weight:700;flex-shrink:0;}
+.post-status.posted{background:rgba(0,229,160,0.08);color:var(--green);}
+.post-status.scheduled{background:rgba(255,184,0,0.08);color:var(--amber);}
+.post-status.failed{background:rgba(255,77,106,0.08);color:var(--red);}
+.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;}
+.analytics-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:20px;}
+.analytics-card h4{font-size:13px;font-weight:700;margin-bottom:14px;color:var(--text2);}
+.chart-placeholder{height:130px;background:var(--bg3);border-radius:10px;display:flex;align-items:flex-end;padding:12px;gap:5px;overflow:hidden;}
+.chart-bar{flex:1;border-radius:3px 3px 0 0;min-height:6px;transition:height 0.6s cubic-bezier(0.34,1.56,0.64,1);}
+.chart-bar.c{background:linear-gradient(to top,var(--cyan),rgba(0,212,255,0.4));}
+.chart-bar.p{background:linear-gradient(to top,var(--purple),rgba(155,109,255,0.4));}
+.engagement-list{display:flex;flex-direction:column;gap:10px;}
+.engagement-row{display:flex;align-items:center;justify-content:space-between;}
+.engagement-label{font-size:12px;font-weight:500;color:var(--text2);}
+.engagement-value{font-size:13px;font-weight:700;}
+.engagement-bar-bg{width:100%;height:4px;background:var(--bg3);border-radius:2px;margin-top:5px;}
+.engagement-bar-fill{height:100%;border-radius:2px;transition:width 0.6s ease;}
+.clients-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.client-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all 0.2s;position:relative;}
+.client-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3);}
+.client-card.active-card{border-color:rgba(155,109,255,0.4);box-shadow:0 0 0 1px rgba(155,109,255,0.15);}
+.cc-badge{position:absolute;top:12px;right:12px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--purple);background:rgba(155,109,255,0.1);border:1px solid rgba(155,109,255,0.2);padding:3px 8px;border-radius:6px;}
+.cc-avatar{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:white;margin-bottom:12px;}
+.cc-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:900;margin-bottom:3px;}
+.cc-niche{font-size:11px;color:var(--text3);font-weight:500;margin-bottom:12px;}
+.cc-meta{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+.cc-row{font-size:11px;color:var(--text2);display:flex;align-items:center;gap:6px;}
+.cc-row code{font-size:10px;font-family:'SF Mono','Fira Code',monospace;color:var(--text3);}
+.cc-actions{display:flex;gap:6px;}
+.cc-btn{flex:1;padding:7px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--text2);font-family:inherit;transition:all 0.15s;text-align:center;}
+.cc-btn:hover{color:var(--text);}
+.cc-btn.primary{background:var(--grad2);border:none;color:white;}
+.add-client-card{background:var(--bg2);border:1px dashed var(--border2);border-radius:14px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;min-height:200px;gap:8px;}
+.add-client-card:hover{border-color:var(--purple);background:rgba(155,109,255,0.03);}
+.add-client-card .plus{font-size:32px;color:var(--purple);line-height:1;}
+.add-client-card p{font-size:13px;font-weight:600;color:var(--purple);}
+.modules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.module-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:24px;text-align:center;transition:all 0.2s;cursor:pointer;}
+.module-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.3);transform:translateY(-2px);}
+.module-card.active-module{border-color:rgba(0,229,160,0.2);}
+.module-card.coming-soon-module{opacity:0.4;}
+.module-icon{width:50px;height:50px;margin:0 auto 12px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:23px;}
+.module-card h4{font-size:13px;font-weight:700;margin-bottom:6px;}
+.module-card p{font-size:11px;font-weight:500;color:var(--text3);line-height:1.6;}
+.module-status{display:inline-block;margin-top:12px;padding:3px 12px;border-radius:16px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;}
+.module-status.live{background:rgba(0,229,160,0.08);color:var(--green);}
+.module-status.soon{background:var(--bg4);color:var(--text3);}
+.settings-section{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:14px;}
+.settings-section h4{font-family:'Syne',sans-serif;font-size:15px;font-weight:900;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;gap:16px;}
+.setting-row:not(:last-child){border-bottom:1px solid rgba(255,255,255,0.04);}
+.setting-label{font-size:13px;font-weight:600;flex-shrink:0;}
+.setting-label span{display:block;font-size:11px;color:var(--text3);font-weight:500;margin-top:2px;}
+.inline-input{flex:1;padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;font-family:inherit;outline:none;transition:all 0.2s;min-width:0;}
+.inline-input:focus{border-color:var(--purple);}
+.small-btn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:var(--grad2);color:white;font-family:inherit;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+.small-btn.outline{background:transparent;border:1px solid var(--border2);color:var(--text2);}
+.small-btn.outline:hover{color:var(--text);}
+.toggle{width:40px;height:22px;background:var(--bg4);border-radius:11px;position:relative;cursor:pointer;border:1px solid var(--border);transition:all 0.2s;flex-shrink:0;}
+.toggle.active{background:var(--purple);border-color:var(--purple);}
+.toggle::after{content:'';width:16px;height:16px;background:white;border-radius:50%;position:absolute;top:2px;left:2px;transition:transform 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.3);}
+.toggle.active::after{transform:translateX(18px);}
+.processing-overlay{display:none;position:fixed;inset:0;background:rgba(10,10,15,0.92);backdrop-filter:blur(10px);z-index:1000;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+.processing-overlay.active{display:flex;}
+.processing-spinner{width:48px;height:48px;border-radius:50%;border:2px solid var(--bg4);border-top-color:var(--cyan);border-right-color:var(--purple);animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.processing-text{font-family:'Syne',sans-serif;font-size:15px;font-weight:900;}
+.processing-client{font-size:11px;color:var(--purple);font-weight:700;}
+.processing-step{font-size:12px;font-weight:500;color:var(--text2);animation:fadeIn 0.3s;}
+.toast{position:fixed;bottom:24px;right:24px;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;z-index:2000;transform:translateY(80px);opacity:0;transition:all 0.3s;box-shadow:0 8px 24px rgba(0,0,0,0.4);}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{background:var(--bg2);border:1px solid rgba(0,229,160,0.2);color:var(--green);}
+.toast.error{background:var(--bg2);border:1px solid rgba(255,77,106,0.2);color:var(--red);}
+.toast.info{background:var(--bg2);border:1px solid rgba(155,109,255,0.2);color:var(--purple);}
+.thinking-dots{display:inline-flex;gap:4px;align-items:center;}
+.thinking-dots span{width:5px;height:5px;border-radius:50%;background:var(--purple);animation:dot-bounce 1.2s infinite;}
+.thinking-dots span:nth-child(2){animation-delay:0.2s;}
+.thinking-dots span:nth-child(3){animation-delay:0.4s;}
+@keyframes dot-bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-6px);}}
+@media(max-width:1024px){.stats-grid{grid-template-columns:repeat(2,1fr);}.analytics-grid{grid-template-columns:1fr;}.modules-grid{grid-template-columns:repeat(2,1fr);}.clients-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:768px){.sidebar{transform:translateX(-100%);}.sidebar.open{transform:translateX(0);}.main-content{margin-left:0;}.stats-grid{grid-template-columns:1fr 1fr;}.page-content{padding:16px;}.modules-grid{grid-template-columns:1fr;}.clients-grid{grid-template-columns:1fr;}.mobile-menu-btn{display:flex !important;}}
+.mobile-menu-btn{display:none;width:34px;height:34px;align-items:center;justify-content:center;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);cursor:pointer;font-size:16px;}
+</style>
+</head>
+<body>
+
+<svg style="display:none">
+  <defs>
+    <linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#00D4FF"/><stop offset="50%" style="stop-color:#9B6DFF"/><stop offset="100%" style="stop-color:#E040FB"/></linearGradient>
+    <linearGradient id="lg2" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#E040FB"/><stop offset="100%" style="stop-color:#00D4FF"/></linearGradient>
+  </defs>
+  <symbol id="mayo-logo" viewBox="0 0 80 80">
+    <line x1="30" y1="22" x2="50" y2="18" stroke="url(#lg1)" stroke-width="6" stroke-linecap="round"/>
+    <line x1="25" y1="38" x2="30" y2="22" stroke="url(#lg1)" stroke-width="5" stroke-linecap="round"/>
+    <line x1="50" y1="18" x2="58" y2="36" stroke="url(#lg2)" stroke-width="5" stroke-linecap="round"/>
+    <line x1="25" y1="38" x2="40" y2="48" stroke="url(#lg1)" stroke-width="5" stroke-linecap="round"/>
+    <line x1="58" y1="36" x2="40" y2="48" stroke="url(#lg2)" stroke-width="5" stroke-linecap="round"/>
+    <line x1="40" y1="48" x2="32" y2="65" stroke="url(#lg1)" stroke-width="5" stroke-linecap="round"/>
+    <line x1="40" y1="48" x2="56" y2="60" stroke="url(#lg2)" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="30" cy="22" r="8" fill="url(#lg1)"/><circle cx="50" cy="18" r="6" fill="#00D4FF"/>
+    <circle cx="25" cy="38" r="5" fill="#E040FB"/><circle cx="58" cy="36" r="7" fill="url(#lg2)"/>
+    <circle cx="40" cy="48" r="9" fill="url(#lg1)"/><circle cx="32" cy="65" r="6" fill="#E040FB"/>
+    <circle cx="56" cy="60" r="4" fill="#9B6DFF"/><circle cx="15" cy="28" r="3" fill="#E040FB" opacity="0.6"/>
+    <circle cx="62" cy="22" r="3" fill="#00D4FF" opacity="0.6"/>
+  </symbol>
+</svg>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="grid-bg"></div>
+  <div class="login-container">
+    <div class="login-logo">
+      <svg width="72" height="72"><use href="#mayo-logo"/></svg>
+      <h1>MAYO Infrastructure</h1>
+      <p>AI-Powered Social Media Automation</p>
+    </div>
+    <div class="login-card">
+      <div class="form-group"><label>Email</label><input type="email" class="form-input" id="loginEmail" placeholder="you@company.com" value="tony@sageit.com"></div>
+      <div class="form-group"><label>Password</label><input type="password" class="form-input" id="loginPassword" placeholder="••••••••" value="demo123"></div>
+      <button class="btn-primary" onclick="handleLogin()">Sign In →</button>
+      <div class="login-footer"><p>Powered by <a href="#">Hyper Growth Hub</a></p></div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app-container" id="appContainer">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo"><svg width="32" height="32"><use href="#mayo-logo"/></svg></div>
+      <div class="sidebar-brand"><h2>MAYO</h2><span>Infrastructure</span></div>
+    </div>
+    <div class="active-client-banner" onclick="openClientModal()">
+      <div class="acb-label">Active Client</div>
+      <div class="acb-row">
+        <span class="acb-name" id="sidebarClientName">Shot Doctor</span>
+        <div class="acb-right">
+          <div class="acb-avatar" id="sidebarClientAvatar" style="background:#9B6DFF;">S</div>
+          <span class="acb-switch">Switch ↕</span>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Main</div>
+        <div class="nav-item active" data-page="dashboard" onclick="switchPage('dashboard')"><span class="nav-icon">⊞</span>Dashboard</div>
+        <div class="nav-item" data-page="posts" onclick="switchPage('posts')"><span class="nav-icon">📄</span>Post History<span class="nav-badge">12</span></div>
+        <div class="nav-item" data-page="analytics" onclick="switchPage('analytics')"><span class="nav-icon">📈</span>Analytics</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Management</div>
+        <div class="nav-item" data-page="clients" onclick="switchPage('clients')"><span class="nav-icon">👥</span>Clients</div>
+        <div class="nav-item" data-page="modules" id="modulesNav" onclick="switchPage('modules')"><span class="nav-icon">⚙</span>Modules</div>
+        <div class="nav-item coming-soon"><span class="nav-icon">💡</span>Lead Gen<span class="coming-tag">Soon</span></div>
+        <div class="nav-item coming-soon"><span class="nav-icon">📊</span>Ad Insights<span class="coming-tag">Soon</span></div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">System</div>
+        <div class="nav-item" data-page="settings" onclick="switchPage('settings')"><span class="nav-icon">⚙</span>Settings</div>
+      </div>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-avatar">T</div>
+      <div class="user-info"><div class="name">Tony</div><div class="role">Admin · HGH</div></div>
+      <button class="logout-btn" onclick="openChangePasswordModal()" title="Change password" style="font-size:13px;">🔑</button>
+      <button class="logout-btn" onclick="handleLogout()" title="Sign out">→</button>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+        <h1 id="pageTitle">Dashboard</h1>
+      </div>
+      <div class="topbar-right">
+        <div class="client-pill" onclick="openClientModal()">
+          <div class="client-pill-avatar" id="topbarClientAvatar" style="background:#9B6DFF;">S</div>
+          <span class="client-pill-name" id="topbarClientName">Shot Doctor</span>
+          <span class="client-pill-arrow">↕</span>
+        </div>
+        <div class="status-badge"><span class="status-dot"></span>n8n Connected</div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-content">
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">Posts This Week</div><div class="stat-value c">24</div><div class="stat-change">↑ +18% from last week</div></div>
+          <div class="stat-card"><div class="stat-label">Total Reach</div><div class="stat-value p">12.4K</div><div class="stat-change">↑ +32% from last week</div></div>
+          <div class="stat-card"><div class="stat-label">Engagement Rate</div><div class="stat-value g">4.8%</div><div class="stat-change">↑ +0.6% from last week</div></div>
+          <div class="stat-card"><div class="stat-label">Scheduled</div><div class="stat-value m">7</div><div class="stat-change">3 for tomorrow</div></div>
+        </div>
+        <div class="command-section">
+          <h3>✦ AI Post Creator</h3>
+          <p id="commandSubtext">Creating for <strong>Shot Doctor</strong> — describe what you want to post.</p>
+          <div class="command-input-wrapper">
+            <div class="command-input-area">
+              <textarea class="command-textarea" id="commandInput" placeholder="e.g., Write a motivational post about basketball training consistency..." rows="1" oninput="autoResize(this)"></textarea>
+              <div class="upload-area" onclick="document.getElementById('imageFileInput').click()">
+                <input type="file" id="imageFileInput" accept="image/*" onchange="handleImageUpload(event)">
+                <div class="upload-preview" id="uploadPreview">
+                  <span style="font-size:18px;">🖼</span>
+                  <div class="upload-text">Attach an image (optional)<span>Claude will analyze it and tailor the caption</span></div>
+                </div>
+              </div>
+              <div class="platform-selector">
+                <button class="platform-chip active" data-platform="all" onclick="selectPlatform(this)">All</button>
+                <button class="platform-chip" data-platform="facebook" onclick="selectPlatform(this)">Facebook</button>
+                <button class="platform-chip" data-platform="instagram" onclick="selectPlatform(this)">Instagram</button>
+                <button class="platform-chip" data-platform="tiktok" onclick="selectPlatform(this)">TikTok</button>
+                <button class="platform-chip" data-platform="linkedin" onclick="selectPlatform(this)">LinkedIn</button>
+              </div>
+              <div class="quick-actions">
+                <button class="quick-action" onclick="setCommand('Write a motivational post about')">💪 Motivation</button>
+                <button class="quick-action" onclick="setCommand('Create a promotional post about')">📢 Promo</button>
+                <button class="quick-action" onclick="setCommand('Write a behind-the-scenes post about')">🎬 BTS</button>
+                <button class="quick-action" onclick="setCommand('Schedule a post for tomorrow at 9am about')">📅 Schedule</button>
+              </div>
+              <div class="ai-response-box" id="aiResponseBox">
+                <div class="ai-response-header">
+                  <span class="ai-badge">✦ Claude AI</span>
+                  <span id="aiThinking" style="display:none;"><span class="thinking-dots"><span></span><span></span><span></span></span></span>
+                </div>
+                <div class="ai-caption" id="aiCaption"></div>
+                <div class="ai-hashtags" id="aiHashtags"></div>
+                <div class="ai-actions" id="aiActions" style="display:none;">
+                  <button class="ai-btn" onclick="regenerateCaption()">↺ Regenerate</button>
+                  <button class="ai-btn" onclick="copyCaption()">⎘ Copy</button>
+                  <button class="ai-btn primary" onclick="simulatePost()">🚀 Send to n8n</button>
+                </div>
+              </div>
+            </div>
+            <div class="command-buttons">
+              <button class="btn-voice" id="voiceBtn" onclick="toggleVoice()">🎙</button>
+              <button class="btn-send" id="sendBtn" onclick="sendCommand()">▶</button>
+            </div>
+          </div>
+        </div>
+        <div class="section-header"><h3>Recent Posts</h3><button class="view-all" onclick="switchPage('posts')">View All</button></div>
+        <div class="posts-list" id="recentPosts">
+          <div class="post-card"><div class="post-thumb">🏀</div><div class="post-info"><div class="post-title">Basketball training drills for improving your shot consistency</div><div class="post-meta"><span>FB + IG</span><span>2 hours ago</span></div></div><span class="post-status posted">Posted</span></div>
+          <div class="post-card"><div class="post-thumb">🏠</div><div class="post-info"><div class="post-title">Professional roofing inspection services in Atlanta</div><div class="post-meta"><span>FB + IG</span><span>5 hours ago</span></div></div><span class="post-status posted">Posted</span></div>
+          <div class="post-card"><div class="post-thumb">🚀</div><div class="post-info"><div class="post-title">AI automation tips for small business owners</div><div class="post-meta"><span>IG</span><span>Tomorrow 9:00 AM</span></div></div><span class="post-status scheduled">Scheduled</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST HISTORY -->
+    <div class="page" id="page-posts">
+      <div class="page-content">
+        <div class="posts-list">
+          <div class="post-card"><div class="post-thumb">🏀</div><div class="post-info"><div class="post-title">Basketball training drills for improving your shot consistency</div><div class="post-meta"><span>FB + IG</span><span>Mar 22, 2026 - 2:30 PM</span></div></div><span class="post-status posted">Posted</span></div>
+          <div class="post-card"><div class="post-thumb">🏠</div><div class="post-info"><div class="post-title">Professional roofing inspection services in Atlanta</div><div class="post-meta"><span>FB + IG</span><span>Mar 22, 2026 - 11:15 AM</span></div></div><span class="post-status posted">Posted</span></div>
+          <div class="post-card"><div class="post-thumb">🚀</div><div class="post-info"><div class="post-title">AI automation tips for small business owners</div><div class="post-meta"><span>IG</span><span>Scheduled: Mar 23, 2026 - 9:00 AM</span></div></div><span class="post-status scheduled">Scheduled</span></div>
+          <div class="post-card"><div class="post-thumb">⚽</div><div class="post-info"><div class="post-title">Youth basketball camp registration now open</div><div class="post-meta"><span>FB</span><span>Mar 21, 2026 - 4:00 PM</span></div></div><span class="post-status posted">Posted</span></div>
+          <div class="post-card"><div class="post-thumb">🔧</div><div class="post-info"><div class="post-title">Storm damage? Get a free roof inspection today</div><div class="post-meta"><span>FB + IG</span><span>Mar 21, 2026</span></div></div><span class="post-status posted">Posted</span></div>
+          <div class="post-card"><div class="post-thumb">🤖</div><div class="post-info"><div class="post-title">How AI is changing digital marketing for local businesses</div><div class="post-meta"><span>FB + IG</span><span>Mar 20, 2026</span></div></div><span class="post-status failed">Failed</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANALYTICS -->
+    <div class="page" id="page-analytics">
+      <div class="page-content">
+        <div class="stats-grid" style="margin-bottom:20px;">
+          <div class="stat-card"><div class="stat-label">Total Posts (30d)</div><div class="stat-value c">89</div></div>
+          <div class="stat-card"><div class="stat-label">Impressions</div><div class="stat-value p">48.2K</div></div>
+          <div class="stat-card"><div class="stat-label">Avg. Engagement</div><div class="stat-value g">4.2%</div></div>
+          <div class="stat-card"><div class="stat-label">Best Day</div><div class="stat-value m">Tue</div></div>
+        </div>
+        <div class="analytics-grid">
+          <div class="analytics-card"><h4>📈 Posts Per Day (Last 7 Days)</h4><div class="chart-placeholder" id="postsChart"></div></div>
+          <div class="analytics-card">
+            <h4>📊 Engagement Breakdown</h4>
+            <div class="engagement-list">
+              <div><div class="engagement-row"><span class="engagement-label">Likes</span><span class="engagement-value">2,341</span></div><div class="engagement-bar-bg"><div class="engagement-bar-fill" style="width:78%;background:var(--cyan);"></div></div></div>
+              <div style="margin-top:10px;"><div class="engagement-row"><span class="engagement-label">Comments</span><span class="engagement-value">487</span></div><div class="engagement-bar-bg"><div class="engagement-bar-fill" style="width:42%;background:var(--purple);"></div></div></div>
+              <div style="margin-top:10px;"><div class="engagement-row"><span class="engagement-label">Shares</span><span class="engagement-value">156</span></div><div class="engagement-bar-bg"><div class="engagement-bar-fill" style="width:24%;background:var(--magenta);"></div></div></div>
+              <div style="margin-top:10px;"><div class="engagement-row"><span class="engagement-label">Saves</span><span class="engagement-value">312</span></div><div class="engagement-bar-bg"><div class="engagement-bar-fill" style="width:35%;background:var(--green);"></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTS -->
+    <div class="page" id="page-clients">
+      <div class="page-content">
+        <div class="section-header"><h3>Client Profiles</h3><button class="small-btn" onclick="openClientModal();setTimeout(openAddForm,100)">+ Add Client</button></div>
+        <div class="clients-grid" id="clientsGrid"></div>
+      </div>
+    </div>
+
+    <!-- MODULES -->
+    <div class="page" id="page-modules">
+      <div class="page-content">
+        <div class="modules-grid">
+          <div class="module-card active-module"><div class="module-icon" style="background:rgba(0,212,255,0.08);">💬</div><h4>Social Media Poster</h4><p>AI-generated captions posted to FB & IG via HGH</p><span class="module-status live">Live</span></div>
+          <div class="module-card active-module"><div class="module-icon" style="background:rgba(155,109,255,0.08);">🎙</div><h4>Voice Commands</h4><p>Hands-free posting via voice transcription</p><span class="module-status live">Live</span></div>
+          <div class="module-card active-module"><div class="module-icon" style="background:rgba(224,64,251,0.08);">📅</div><h4>Post Scheduling</h4><p>Schedule posts via natural language</p><span class="module-status live">Live</span></div>
+          <div class="module-card active-module"><div class="module-icon" style="background:rgba(0,229,160,0.08);">🖼</div><h4>Image Analysis</h4><p>Claude analyzes images to tailor captions</p><span class="module-status live">Live</span></div>
+          <div class="module-card active-module"><div class="module-icon" style="background:rgba(155,109,255,0.08);">👥</div><h4>Multi-Client</h4><p>Switch between clients — each with their own HGH ID and webhook</p><span class="module-status live">Live</span></div>
+          <div class="module-card coming-soon-module"><div class="module-icon" style="background:rgba(255,184,0,0.08);">💡</div><h4>Lead Generation</h4><p>Google Sheets integration for lead management</p><span class="module-status soon">Coming Soon</span></div>
+          <div class="module-card coming-soon-module"><div class="module-icon" style="background:rgba(79,70,229,0.08);">📊</div><h4>Ad Insights</h4><p>FB & IG ad performance metrics</p><span class="module-status soon">Coming Soon</span></div>
+          <div class="module-card coming-soon-module"><div class="module-icon" style="background:rgba(16,185,129,0.08);">✉</div><h4>Email Campaigns</h4><p>Automated email sequences</p><span class="module-status soon">Coming Soon</span></div>
+          <div class="module-card coming-soon-module"><div class="module-icon" style="background:rgba(0,212,255,0.08);">🤖</div><h4>AI Chat Agent</h4><p>24/7 AI chatbot for client sites</p><span class="module-status soon">Coming Soon</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="page" id="page-settings">
+      <div class="page-content">
+        <div class="settings-section">
+          <h4>Main Webhook</h4>
+          <div class="setting-row">
+            <div class="setting-label">n8n Webhook URL<span>One main webhook — HGH ID in payload routes each client</span></div>
+            <div style="display:flex;gap:8px;align-items:center;flex:1;max-width:460px;">
+              <input type="text" id="webhookUrlInput" class="inline-input" style="font-family:'SF Mono','Fira Code',monospace;font-size:11px;" placeholder="https://your-n8n.com/webhook/mayo">
+              <button onclick="saveWebhookUrl()" class="small-btn">Save</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">Connection Status<span id="lastPingText">Last ping: 2 seconds ago</span></div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <div class="status-badge" style="font-size:11px;" id="connectionStatus"><span class="status-dot"></span>Connected</div>
+              <button onclick="testWebhook()" class="small-btn outline">Test</button>
+            </div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h4>Preferences</h4>
+          <div class="setting-row"><div class="setting-label">Post Notifications<span>Get notified when posts are published</span></div><div class="toggle active" onclick="this.classList.toggle('active')"></div></div>
+          <div class="setting-row"><div class="setting-label">Voice Auto-Submit<span>Automatically send after voice recording ends</span></div><div class="toggle" onclick="this.classList.toggle('active')"></div></div>
+        </div>
+        <div class="settings-section">
+          <h4>n8n Payload Structure</h4>
+          <div style="background:var(--bg3);border-radius:10px;padding:16px;font-family:'SF Mono','Fira Code',monospace;font-size:12px;color:var(--text2);line-height:1.8;">
+            <span style="color:var(--text3)">// Sent to your one n8n webhook on every post</span><br>
+            {<br>&nbsp;&nbsp;<span style="color:var(--cyan)">"client_name"</span>: <span style="color:var(--green)">"Shot Doctor"</span>,<br>
+            &nbsp;&nbsp;<span style="color:var(--cyan)">"hgh_id"</span>: <span style="color:var(--green)">"angLr7uC9e5yltccWprT"</span>,<br>
+            &nbsp;&nbsp;<span style="color:var(--cyan)">"niche"</span>: <span style="color:var(--green)">"Sports &amp; Fitness"</span>,<br>
+            &nbsp;&nbsp;<span style="color:var(--cyan)">"platform"</span>: <span style="color:var(--green)">"all | facebook | instagram | tiktok | linkedin"</span>,<br>
+            &nbsp;&nbsp;<span style="color:var(--cyan)">"active_platforms"</span>: <span style="color:var(--green)">["facebook","instagram","tiktok","linkedin"]</span>,<br>
+            &nbsp;&nbsp;<span style="color:var(--cyan)">"caption"</span>: <span style="color:var(--green)">"Claude-generated caption"</span>,<br>
+            &nbsp;&nbsp;<span style="color:var(--cyan)">"command"</span>: <span style="color:var(--green)">"user's original command"</span>,<br>
+            &nbsp;&nbsp;<span style="color:var(--cyan)">"timestamp"</span>: <span style="color:var(--green)">"ISO 8601"</span><br>}
+          </div>
+        </div>
+        <div class="settings-section">
+          <h4>👤 Sub-Admin Account</h4>
+          <div class="setting-row">
+            <div class="setting-label">Name<span>Displayed in sidebar when they log in</span></div>
+            <input type="text" class="inline-input" id="sa_name" placeholder="Bryant" style="max-width:260px;">
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">Email<span>Sub-admin login email</span></div>
+            <input type="text" class="inline-input" id="sa_email" placeholder="bryant@spenward.com" style="max-width:260px;">
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">Password<span>You can reset this anytime</span></div>
+            <div style="display:flex;gap:8px;align-items:center;flex:1;max-width:260px;">
+              <input type="password" class="inline-input" id="sa_password" placeholder="Sub-admin password">
+              <button onclick="saveSubAdmin()" class="small-btn">Save</button>
+            </div>
+          </div>
+          <div style="padding:8px 0 4px;">
+            <div style="font-size:11px;color:var(--text3);line-height:1.7;">
+              Sub-admin can: view &amp; switch all clients, edit profiles, create posts, view analytics.<br>
+              Sub-admin cannot: add/delete clients, view workflow URLs, access Settings or Modules.
+            </div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h4>🔐 Admin Password</h4>
+          <div class="setting-row">
+            <div class="setting-label">Current Password<span>Your login password</span></div>
+            <input type="password" class="inline-input" id="admin_current_pass" placeholder="Current password" style="max-width:200px;">
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">New Password<span>Must be at least 8 characters</span></div>
+            <div style="display:flex;gap:8px;align-items:center;flex:1;max-width:260px;">
+              <input type="password" class="inline-input" id="admin_new_pass" placeholder="New password">
+              <button onclick="changeAdminPassword()" class="small-btn">Update</button>
+            </div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h4>🗝 Client Password Reset</h4>
+          <p style="font-size:12px;color:var(--text2);margin-bottom:14px;">Reset the MAYO app login password for any client. Sub-admin can also do this from the Clients page.</p>
+          <div id="clientPasswordList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CLIENT MODAL -->
+<div class="modal-overlay" id="clientModal">
+  <div class="modal">
+    <div id="clientListView">
+      <div class="modal-header"><h3>Client Profiles</h3><button class="modal-close" onclick="closeClientModal()">✕</button></div>
+      <div class="client-list" id="clientList"></div>
+      <button class="btn-add-client" id="addClientBtn" onclick="openAddForm()">+ Add New Client</button>
+    </div>
+    <div class="client-form" id="clientForm">
+      <div class="modal-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <button class="modal-close" onclick="showClientList()" style="font-size:18px;">←</button>
+          <h3 id="formTitle">Add Client</h3>
+        </div>
+        <button class="modal-close" onclick="closeClientModal()">✕</button>
+      </div>
+      <div class="form-row">
+        <div class="form-field"><label>Business Name *</label><input type="text" class="form-input" id="cf_name" placeholder="e.g. Shot Doctor" style="padding:10px 13px;font-size:13px;"></div>
+        <div class="form-field"><label>Industry / Niche</label>
+          <select class="niche-select" id="cf_niche">
+            <option>Sports & Fitness</option><option>Roofing & Construction</option><option>Real Estate</option>
+            <option>Restaurant & Food</option><option>Health & Wellness</option><option>Automotive</option>
+            <option>Retail & E-commerce</option><option>Legal Services</option><option>Marketing & Agency</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field"><label>HGH Location ID</label><input type="text" class="form-input" id="cf_hghid" placeholder="angLr7uC9e5yltccWprT" style="padding:10px 13px;font-size:11px;font-family:'SF Mono','Fira Code',monospace;"></div>
+        <div class="form-field"><label>Logo URL (optional)</label><input type="text" class="form-input" id="cf_logo" placeholder="https://..." style="padding:10px 13px;font-size:12px;"></div>
+      </div>
+      <div style="margin-bottom:14px;" id="webhookFormRow">
+        <div class="form-field"><label style="display:flex;align-items:center;gap:6px;">🔐 Workflow Webhook URL <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--purple);background:rgba(155,109,255,0.1);border:1px solid rgba(155,109,255,0.2);padding:2px 7px;border-radius:5px;">Admin Only</span></label>
+          <input type="text" class="form-input" id="cf_webhook" placeholder="https://n8n.srv803590.hstgr.cloud/webhook/..." style="padding:10px 13px;font-size:12px;margin-top:6px;font-family:'SF Mono','Fira Code',monospace;">
+          <div style="font-size:11px;color:var(--text3);margin-top:5px;">Each client routes to their own workflow. Leave blank to use the main webhook.</div>
+        </div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:8px;">Connected Platforms</div>
+        <div class="platform-row">
+          <button class="platform-toggle on" id="pt_fb" onclick="togglePT('fb')">📘 Facebook</button>
+          <button class="platform-toggle on" id="pt_ig" onclick="togglePT('ig')">📸 Instagram</button>
+          <button class="platform-toggle" id="pt_tt" onclick="togglePT('tt')">🎵 TikTok</button>
+          <button class="platform-toggle" id="pt_li" onclick="togglePT('li')">💼 LinkedIn</button>
+        </div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:8px;">Avatar Color</div>
+        <div class="color-row" id="colorRow"></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="showClientList()">Cancel</button>
+        <button class="btn-save" onclick="saveClient()">Save Client</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHANGE PASSWORD MODAL -->
+<div class="modal-overlay" id="changePassModal">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-header">
+      <h3>Change Password</h3>
+      <button class="modal-close" onclick="document.getElementById('changePassModal').classList.remove('active')">✕</button>
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:7px;">Current Password</div>
+      <input type="password" class="form-input" id="cp_current" placeholder="Enter current password" style="padding:11px 14px;font-size:13px;">
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:7px;">New Password</div>
+      <input type="password" class="form-input" id="cp_new" placeholder="Enter new password" style="padding:11px 14px;font-size:13px;">
+    </div>
+    <div style="margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:7px;">Confirm New Password</div>
+      <input type="password" class="form-input" id="cp_confirm" placeholder="Confirm new password" style="padding:11px 14px;font-size:13px;">
+    </div>
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="document.getElementById('changePassModal').classList.remove('active')">Cancel</button>
+      <button class="btn-save" onclick="submitChangePassword()">Update Password</button>
+    </div>
+  </div>
+</div>
+
+<!-- CLIENT PASSWORD RESET MODAL -->
+<div class="modal-overlay" id="clientPassModal">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-header">
+      <h3>Reset Client Password</h3>
+      <button class="modal-close" onclick="document.getElementById('clientPassModal').classList.remove('active')">✕</button>
+    </div>
+    <div style="margin-bottom:6px;font-size:13px;color:var(--text2);">Resetting password for: <strong id="resetClientName" style="color:var(--text)"></strong></div>
+    <div style="margin-bottom:14px;margin-top:14px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:7px;">New Password</div>
+      <input type="password" class="form-input" id="cpr_new" placeholder="Set new client password" style="padding:11px 14px;font-size:13px;">
+    </div>
+    <div style="margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:7px;">Confirm Password</div>
+      <input type="password" class="form-input" id="cpr_confirm" placeholder="Confirm password" style="padding:11px 14px;font-size:13px;">
+    </div>
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="document.getElementById('clientPassModal').classList.remove('active')">Cancel</button>
+      <button class="btn-save" onclick="submitClientPasswordReset()">Reset Password</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESSING -->
+<div class="processing-overlay" id="processingOverlay">
+  <div class="processing-spinner"></div>
+  <div class="processing-text">Sending to n8n...</div>
+  <div class="processing-client" id="processingClient"></div>
+  <div class="processing-step" id="processingStep"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// STATE
+let currentPage='dashboard',isRecording=false,selectedPlatform='both';
+let mediaRecorder=null,audioChunks=[];
+let uploadedImageBase64=null,uploadedImageType=null;
+let lastCaption='',lastCommand='';
+let editingClientId=null;
+let ptToggles={fb:true,ig:true,tt:false,li:false};
+let selectedColor='#9B6DFF';
+const COLORS=['#9B6DFF','#00D4FF','#E040FB','#00E5A0','#FFB800','#FF4D6A','#4F46E5','#EC4899','#F97316','#06B6D4'];
+const DEFAULT_CLIENTS=[{id:'c1',name:'Shot Doctor',niche:'Sports & Fitness',hghId:'angLr7uC9e5yltccWprT',logo:'',webhook:'',platforms:{fb:true,ig:true,tt:false,li:false},color:'#9B6DFF'}];
+
+// CLIENT STORAGE
+function loadClients(){const s=localStorage.getItem('mayo_clients');return s?JSON.parse(s):DEFAULT_CLIENTS;}
+function saveClients(c){localStorage.setItem('mayo_clients',JSON.stringify(c));}
+function getActiveClient(){const c=loadClients(),id=localStorage.getItem('mayo_active')||c[0]?.id;return c.find(x=>x.id===id)||c[0];}
+function getInitial(n){return n?n[0].toUpperCase():'?';}
+
+function setActiveClient(id){
+  localStorage.setItem('mayo_active',id);
+  updateClientUI();
+  closeClientModal();
+  const c=getActiveClient();
+  showToast('✓ Switched to '+c.name,'success');
+  renderClientsGrid();
+}
+
+function updateClientUI(){
+  const c=getActiveClient();if(!c)return;
+  document.getElementById('sidebarClientName').textContent=c.name;
+  const sa=document.getElementById('sidebarClientAvatar');sa.textContent=getInitial(c.name);sa.style.background=c.color;
+  const ta=document.getElementById('topbarClientAvatar');ta.textContent=getInitial(c.name);ta.style.background=c.color;
+  document.getElementById('topbarClientName').textContent=c.name;
+  const sub=document.getElementById('commandSubtext');
+  if(sub)sub.innerHTML=`Creating for <strong>${c.name}</strong> — describe what you want to post.`;
+}
+
+// ROLES
+// Roles: 'admin', 'subadmin'
+// Stored in localStorage after login
+let currentRole = 'admin';
+
+function getAccounts(){
+  // Admin password can be changed via Settings
+  const adminPass=localStorage.getItem('mayo_admin_password')||'demo123';
+  return {
+    admin:{email:'tony@sageit.com',password:adminPass,name:'Tony',role:'admin',label:'Admin · HGH'},
+    subadmin:{
+      email:localStorage.getItem('mayo_sa_email')||'bryant@spenward.com',
+      password:localStorage.getItem('mayo_sa_password')||'Bspen1234$',
+      name:localStorage.getItem('mayo_sa_name')||'Bryant',
+      role:'subadmin',label:'Sub-Admin · HGH'
+    }
+  };
+}
+
+function applyRole(role){
+  currentRole=role;
+  localStorage.setItem('mayo_role',role);
+  const isAdmin=role==='admin';
+  // Settings nav — admin only
+  const settingsNav=document.querySelector('.nav-item[data-page="settings"]');
+  if(settingsNav)settingsNav.style.display=isAdmin?'':'none';
+  // Modules nav — visible to all roles
+  // Change password link in sidebar — always show
+  const acc=getAccounts()[role];
+  const nameEl=document.querySelector('.sidebar-user .name');
+  const roleEl=document.querySelector('.sidebar-user .role');
+  if(nameEl)nameEl.textContent=acc.name;
+  if(roleEl)roleEl.textContent=acc.label;
+}
+
+// LOGIN
+function handleLogin(){
+  const e=document.getElementById('loginEmail').value.trim().toLowerCase();
+  const p=document.getElementById('loginPassword').value;
+  if(!e||!p){showToast('Please enter email and password','error');return;}
+  const accounts=getAccounts();
+  let matchedRole=null;
+  for(const[role,acc] of Object.entries(accounts)){
+    if(e===acc.email.toLowerCase()&&p===acc.password){matchedRole=role;break;}
+  }
+  if(!matchedRole){showToast('Invalid email or password','error');return;}
+  setTimeout(()=>{
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('appContainer').classList.add('active');
+    applyRole(matchedRole);
+    updateClientUI();initCharts();renderClientsGrid();
+  },700);
+}
+function handleLogout(){
+  document.getElementById('appContainer').classList.remove('active');
+  document.getElementById('loginScreen').classList.remove('hidden');
+}
+
+// NAV
+function switchPage(p){
+  currentPage=p;
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+  const n=document.querySelector(`.nav-item[data-page="${p}"]`);if(n)n.classList.add('active');
+  const titles={dashboard:'Dashboard',posts:'Post History',analytics:'Analytics',clients:'Clients',modules:'Modules',settings:'Settings'};
+  document.getElementById('pageTitle').textContent=titles[p]||p;
+  document.getElementById('sidebar').classList.remove('open');
+  if(p==='analytics')initCharts();
+  if(p==='clients')renderClientsGrid();
+  if(p==='settings'){renderClientPasswordList();}
+}
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
+
+// CLIENT MODAL
+function openClientModal(){renderClientList();showClientList();document.getElementById('clientModal').classList.add('active');}
+function closeClientModal(){document.getElementById('clientModal').classList.remove('active');}
+function showClientList(){document.getElementById('clientListView').style.display='';document.getElementById('clientForm').classList.remove('show');}
+
+function renderClientList(){
+  const clients=loadClients(),active=getActiveClient();
+  const list=document.getElementById('clientList');list.innerHTML='';
+  // Show/hide Add button based on role
+  const addBtn=document.getElementById('addClientBtn');
+  if(addBtn)addBtn.style.display=currentRole==='admin'?'':'none';
+  clients.forEach(c=>{
+    const isActive=c.id===active?.id;
+    const div=document.createElement('div');
+    div.className='client-item'+(isActive?' selected':'');
+    div.innerHTML=`
+      <div class="ci-avatar" style="background:${c.color}">${getInitial(c.name)}</div>
+      <div class="ci-info"><div class="ci-name">${c.name}</div><div class="ci-meta">${c.niche} · ${c.hghId?c.hghId.substring(0,14)+'...':'No HGH ID'}</div></div>
+      <div class="ci-actions">
+        <button class="ci-btn" onclick="editClient('${c.id}');event.stopPropagation()">Edit</button>
+        ${currentRole==='admin'&&!isActive?`<button class="ci-btn danger" onclick="deleteClient('${c.id}');event.stopPropagation()">Delete</button>`:''}
+      </div>
+      ${isActive?'<span class="ci-check">✓</span>':''}`;
+    div.onclick=()=>setActiveClient(c.id);
+    list.appendChild(div);
+  });
+}
+
+function renderClientsGrid(){
+  const clients=loadClients(),active=getActiveClient();
+  const grid=document.getElementById('clientsGrid');if(!grid)return;
+  grid.innerHTML='';
+  clients.forEach(c=>{
+    const isActive=c.id===active?.id;
+    const plats=[c.platforms?.fb&&'FB',c.platforms?.ig&&'IG',c.platforms?.tt&&'TikTok',c.platforms?.li&&'LinkedIn'].filter(Boolean).join(' · ');
+    const div=document.createElement('div');
+    div.className='client-card'+(isActive?' active-card':'');
+    div.innerHTML=`
+      ${isActive?'<span class="cc-badge">Active</span>':''}
+      <div class="cc-avatar" style="background:${c.color}">${getInitial(c.name)}</div>
+      <div class="cc-name">${c.name}</div>
+      <div class="cc-niche">${c.niche}</div>
+      <div class="cc-meta">
+        <div class="cc-row">🔑 <code>${c.hghId||'No HGH ID'}</code></div>
+        <div class="cc-row">📱 ${plats||'No platforms set'}</div>
+        <div class="cc-row">🔗 ${c.webhook?'<span style="color:var(--green)">Webhook configured</span>':'<span style="color:var(--amber)">No webhook — add in Edit</span>'}</div>
+      </div>
+      <div class="cc-actions">
+        <button class="cc-btn" onclick="editClient('${c.id}');openClientModal()">Edit</button>
+        <button class="cc-btn" onclick="openClientPasswordReset('${c.id}')" title="Reset client password">🔑</button>
+        ${!isActive?`<button class="cc-btn" onclick="setActiveClient('${c.id}')">Switch To</button>`:''}
+        <button class="cc-btn primary" onclick="setActiveClient('${c.id}');switchPage('dashboard')">Post Now</button>
+      </div>`;
+    grid.appendChild(div);
+  });
+  // Only admin can add clients
+  if(currentRole==='admin'){
+    const add=document.createElement('div');
+    add.className='add-client-card';
+    add.innerHTML='<span class="plus">+</span><p>Add New Client</p>';
+    add.onclick=()=>{openClientModal();setTimeout(openAddForm,100);};
+    grid.appendChild(add);
+  }
+}
+
+function openAddForm(){
+  editingClientId=null;
+  document.getElementById('formTitle').textContent='Add Client';
+  document.getElementById('cf_name').value='';
+  document.getElementById('cf_niche').value='Sports & Fitness';
+  document.getElementById('cf_hghid').value='';
+  document.getElementById('cf_logo').value='';
+  document.getElementById('cf_webhook').value='';
+  const webhookRow=document.getElementById('webhookFormRow');
+  if(webhookRow)webhookRow.style.display=currentRole==='admin'?'':'none';
+  ptToggles={fb:true,ig:true,tt:false,li:false};updatePT();
+  selectedColor=COLORS[0];renderColors();
+  document.getElementById('clientListView').style.display='none';
+  document.getElementById('clientForm').classList.add('show');
+}
+
+function editClient(id){
+  const c=loadClients().find(x=>x.id===id);if(!c)return;
+  editingClientId=id;
+  document.getElementById('formTitle').textContent='Edit Client';
+  document.getElementById('cf_name').value=c.name;
+  document.getElementById('cf_niche').value=c.niche;
+  document.getElementById('cf_hghid').value=c.hghId||'';
+  document.getElementById('cf_logo').value=c.logo||'';
+  document.getElementById('cf_webhook').value=c.webhook||'';
+  // Hide webhook from sub-admin
+  const webhookRow=document.getElementById('webhookFormRow');
+  if(webhookRow)webhookRow.style.display=currentRole==='admin'?'':'none';
+  ptToggles={fb:c.platforms?.fb??true,ig:c.platforms?.ig??true,tt:c.platforms?.tt??false,li:c.platforms?.li??false};updatePT();
+  selectedColor=c.color||COLORS[0];renderColors();
+  document.getElementById('clientListView').style.display='none';
+  document.getElementById('clientForm').classList.add('show');
+}
+
+function deleteClient(id){
+  if(!confirm('Remove this client?'))return;
+  let c=loadClients().filter(x=>x.id!==id);
+  saveClients(c);
+  if(c.length)localStorage.setItem('mayo_active',c[0].id);
+  updateClientUI();renderClientList();renderClientsGrid();
+  showToast('Client removed','info');
+}
+
+function saveClient(){
+  const name=document.getElementById('cf_name').value.trim();
+  if(!name){showToast('Business name is required','error');return;}
+  const clients=loadClients();
+  const data={name,niche:document.getElementById('cf_niche').value,hghId:document.getElementById('cf_hghid').value.trim(),logo:document.getElementById('cf_logo').value.trim(),webhook:document.getElementById('cf_webhook').value.trim(),platforms:{...ptToggles},color:selectedColor};
+  if(editingClientId){
+    const i=clients.findIndex(x=>x.id===editingClientId);
+    if(i!==-1)clients[i]={...clients[i],...data};
+  } else {
+    clients.push({id:'c'+Date.now(),...data});
+  }
+  saveClients(clients);
+  updateClientUI();renderClientsGrid();
+  showClientList();renderClientList();
+  showToast(editingClientId?'✓ Client updated!':'✓ Client added!','success');
+}
+
+function togglePT(k){ptToggles[k]=!ptToggles[k];updatePT();}
+function updatePT(){
+  ['fb','ig','tt','li'].forEach(k=>{
+    const el=document.getElementById('pt_'+k);
+    if(el)el.className='platform-toggle'+(ptToggles[k]?' on':'');
+  });
+}
+function renderColors(){
+  const row=document.getElementById('colorRow');row.innerHTML='';
+  COLORS.forEach(color=>{
+    const sw=document.createElement('div');
+    sw.className='color-swatch'+(color===selectedColor?' selected':'');
+    sw.style.background=color;
+    sw.onclick=()=>{selectedColor=color;renderColors();};
+    row.appendChild(sw);
+  });
+}
+
+// INPUT
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';}
+function selectPlatform(chip){document.querySelectorAll('.platform-chip').forEach(c=>c.classList.remove('active'));chip.classList.add('active');selectedPlatform=chip.dataset.platform;}
+function setCommand(t){const i=document.getElementById('commandInput');i.value=t+' ';i.focus();autoResize(i);}
+
+// IMAGE UPLOAD
+function handleImageUpload(event){
+  const file=event.target.files[0];if(!file)return;
+  const valid=['image/jpeg','image/png','image/gif','image/webp'];
+  if(!valid.includes(file.type)){showToast('Use JPG, PNG, GIF, or WebP','error');return;}
+  if(file.size>5*1024*1024){showToast('Image must be under 5MB','error');return;}
+  const reader=new FileReader();
+  reader.onload=(e)=>{
+    const url=e.target.result;
+    uploadedImageBase64=url.split(',')[1]; // Strip data URI prefix — fixes the 400 error
+    uploadedImageType=file.type;
+    document.getElementById('uploadPreview').innerHTML=`<img src="${url}"><div class="upload-text">${file.name}<span>${(file.size/1024).toFixed(0)}KB</span></div><button class="clear-img" onclick="clearImage(event)">✕</button>`;
+    showToast('Image attached','info');
+  };
+  reader.readAsDataURL(file);
+}
+function clearImage(e){
+  e.stopPropagation();uploadedImageBase64=null;uploadedImageType=null;
+  document.getElementById('imageFileInput').value='';
+  document.getElementById('uploadPreview').innerHTML='<span style="font-size:18px;">🖼</span><div class="upload-text">Attach an image (optional)<span>Claude will analyze it and tailor the caption</span></div>';
+}
+
+// CLAUDE API
+async function callClaude(command,imgB64,imgType){
+  const client=getActiveClient();
+  const platNames={all:'Facebook, Instagram, TikTok, and LinkedIn',facebook:'Facebook',instagram:'Instagram',tiktok:'TikTok',linkedin:'LinkedIn'};
+  const platform=platNames[selectedPlatform]||'all platforms';
+  const tiktokNote=selectedPlatform==='tiktok'?' Write in a punchy, trending, hook-driven style for short-form video.':'';
+  const linkedinNote=selectedPlatform==='linkedin'?' Write in a professional, insight-driven, thought-leadership tone.':'';
+  const sys=`You are an expert social media content creator for MAYO Infrastructure (Hyper Growth Hub). Current client: ${client.name} (${client.niche}).
+Respond ONLY with a JSON object, no markdown:
+{"caption":"full caption here","hashtags":["tag1","tag2"],"tip":"one optimization tip"}
+Optimize for ${platform}.${tiktokNote}${linkedinNote} ${imgB64?'An image is attached — analyze it and tailor the caption to match.':''}`;
+  const content=[];
+  if(imgB64&&imgType)content.push({type:'image',source:{type:'base64',media_type:imgType,data:imgB64}});
+  content.push({type:'text',text:command});
+  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:[{role:'user',content}]})});
+  if(!r.ok)throw new Error(await r.text());
+  const d=await r.json();
+  return JSON.parse(d.content.map(b=>b.text||'').join('').replace(/```json|```/g,'').trim());
+}
+
+async function sendCommand(){
+  const input=document.getElementById('commandInput');
+  const command=input.value.trim();
+  if(!command){showToast('Please enter a command','error');return;}
+  lastCommand=command;
+  const sendBtn=document.getElementById('sendBtn');sendBtn.disabled=true;
+  const box=document.getElementById('aiResponseBox'),cap=document.getElementById('aiCaption'),tags=document.getElementById('aiHashtags'),acts=document.getElementById('aiActions'),think=document.getElementById('aiThinking');
+  box.classList.add('show');cap.textContent='';tags.innerHTML='';acts.style.display='none';think.style.display='inline';
+  try{
+    const res=await callClaude(command,uploadedImageBase64,uploadedImageType);
+    think.style.display='none';lastCaption=res.caption;cap.textContent='';
+    let i=0;const t=setInterval(()=>{cap.textContent+=res.caption[i];i++;if(i>=res.caption.length){clearInterval(t);tags.innerHTML='';(res.hashtags||[]).forEach(h=>{const s=document.createElement('span');s.className='hashtag';s.textContent=h.startsWith('#')?h:'#'+h;tags.appendChild(s);});acts.style.display='flex';}},12);
+    if(res.tip)showToast('💡 '+res.tip,'info');
+  }catch(err){think.style.display='none';cap.textContent='Error: '+(err.message||'API error');showToast('API error','error');console.error(err);}
+  sendBtn.disabled=false;
+}
+
+async function regenerateCaption(){if(lastCommand){document.getElementById('commandInput').value=lastCommand;await sendCommand();}}
+function copyCaption(){if(lastCaption){const h=Array.from(document.querySelectorAll('.hashtag')).map(x=>x.textContent).join(' ');navigator.clipboard.writeText(lastCaption+'\n\n'+h);showToast('Copied!','success');}}
+
+function simulatePost(){
+  const command=document.getElementById('commandInput').value||lastCommand;
+  const c=getActiveClient();
+  const webhookUrl=c.webhook||localStorage.getItem('mayo_webhook')||'';
+  const activePlats=Object.entries(c.platforms||{}).filter(([,v])=>v).map(([k])=>({fb:'facebook',ig:'instagram',tt:'tiktok',li:'linkedin'}[k])).filter(Boolean);
+  const payload={client_name:c.name,hgh_id:c.hghId,niche:c.niche,platform:selectedPlatform,active_platforms:activePlats,caption:lastCaption,command,timestamp:new Date().toISOString()};
+  console.log('📤 Sending to:',(webhookUrl||'NO WEBHOOK SET'));
+  console.log('📤 n8n Payload:',JSON.stringify(payload,null,2));
+  if(!webhookUrl){showToast('⚠ No webhook set for '+c.name+' — add one in Clients → Edit','error');document.getElementById('processingOverlay').classList.remove('active');return;}
+  document.getElementById('processingClient').textContent='→ '+c.name;
+  document.getElementById('processingOverlay').classList.add('active');
+  document.getElementById('commandInput').value='';autoResize(document.getElementById('commandInput'));
+  document.getElementById('aiResponseBox').classList.remove('show');
+  const steps=['Triggering webhook...','Processing in n8n...','Routing to HGH sub-account...','Publishing to social media...','Done! ✓'];
+  let i=0;
+  const interval=setInterval(()=>{
+    if(i<steps.length-1){document.getElementById('processingStep').textContent=steps[i];i++;}
+    else{clearInterval(interval);document.getElementById('processingStep').textContent=steps[steps.length-1];setTimeout(()=>{document.getElementById('processingOverlay').classList.remove('active');addNewPost(command);showToast('✓ Sent to n8n for '+c.name,'success');},600);}
+  },900);
+}
+
+function addNewPost(cmd){
+  const list=document.getElementById('recentPosts');const card=document.createElement('div');card.className='post-card';card.style.animation='fadeIn 0.3s';
+  const pt=selectedPlatform==='both'?'FB + IG':selectedPlatform==='facebook'?'FB':'IG';
+  card.innerHTML=`<div class="post-thumb">✨</div><div class="post-info"><div class="post-title">${cmd}</div><div class="post-meta"><span>${pt}</span><span>Just now</span></div></div><span class="post-status posted">Posted</span>`;
+  list.insertBefore(card,list.firstChild);
+}
+
+// VOICE
+async function toggleVoice(){
+  const btn=document.getElementById('voiceBtn');
+  if(!isRecording){
+    try{const s=await navigator.mediaDevices.getUserMedia({audio:true});mediaRecorder=new MediaRecorder(s);audioChunks=[];mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);mediaRecorder.onstop=()=>{s.getTracks().forEach(t=>t.stop());showToast('Voice recorded','info');};mediaRecorder.start();isRecording=true;btn.classList.add('recording');btn.innerHTML='⬛';}
+    catch(e){showToast('Microphone access denied','error');}
+  }else{mediaRecorder.stop();isRecording=false;btn.classList.remove('recording');btn.innerHTML='🎙';}
+}
+
+function saveSubAdmin(){
+  const name=document.getElementById('sa_name').value.trim();
+  const email=document.getElementById('sa_email').value.trim();
+  const password=document.getElementById('sa_password').value;
+  if(!name||!email||!password){showToast('Fill in all sub-admin fields','error');return;}
+  localStorage.setItem('mayo_sa_name',name);
+  localStorage.setItem('mayo_sa_email',email);
+  localStorage.setItem('mayo_sa_password',password);
+  showToast('✓ Sub-admin account updated!','success');
+}
+
+function changeAdminPassword(){
+  const current=document.getElementById('admin_current_pass').value;
+  const newPass=document.getElementById('admin_new_pass').value;
+  const accounts=getAccounts();
+  if(current!==accounts.admin.password){showToast('Current password is incorrect','error');return;}
+  if(newPass.length<8){showToast('Password must be at least 8 characters','error');return;}
+  localStorage.setItem('mayo_admin_password',newPass);
+  document.getElementById('admin_current_pass').value='';
+  document.getElementById('admin_new_pass').value='';
+  showToast('✓ Admin password updated!','success');
+}
+
+// Change password modal (for self — works for both admin and sub-admin)
+let changingPassModalFor='self';
+function openChangePasswordModal(){
+  changingPassModalFor='self';
+  document.getElementById('cp_current').value='';
+  document.getElementById('cp_new').value='';
+  document.getElementById('cp_confirm').value='';
+  document.getElementById('changePassModal').classList.add('active');
+}
+
+function submitChangePassword(){
+  const current=document.getElementById('cp_current').value;
+  const newPass=document.getElementById('cp_new').value;
+  const confirm=document.getElementById('cp_confirm').value;
+  if(newPass!==confirm){showToast('Passwords do not match','error');return;}
+  if(newPass.length<8){showToast('Password must be at least 8 characters','error');return;}
+  const accounts=getAccounts();
+  const acc=accounts[currentRole];
+  if(current!==acc.password){showToast('Current password is incorrect','error');return;}
+  if(currentRole==='admin'){
+    localStorage.setItem('mayo_admin_password',newPass);
+  } else {
+    localStorage.setItem('mayo_sa_password',newPass);
+    // Update settings field if visible
+    const saPass=document.getElementById('sa_password');
+    if(saPass)saPass.value=newPass;
+  }
+  document.getElementById('changePassModal').classList.remove('active');
+  showToast('✓ Password updated successfully!','success');
+}
+
+// Client password reset
+let resetingClientId=null;
+function openClientPasswordReset(clientId){
+  const clients=loadClients();
+  const c=clients.find(x=>x.id===clientId);
+  if(!c)return;
+  resetingClientId=clientId;
+  document.getElementById('resetClientName').textContent=c.name;
+  document.getElementById('cpr_new').value='';
+  document.getElementById('cpr_confirm').value='';
+  document.getElementById('clientPassModal').classList.add('active');
+}
+
+function submitClientPasswordReset(){
+  const newPass=document.getElementById('cpr_new').value;
+  const confirm=document.getElementById('cpr_confirm').value;
+  if(!newPass){showToast('Enter a new password','error');return;}
+  if(newPass!==confirm){showToast('Passwords do not match','error');return;}
+  if(newPass.length<6){showToast('Password must be at least 6 characters','error');return;}
+  // Save client password
+  const clients=loadClients();
+  const idx=clients.findIndex(x=>x.id===resetingClientId);
+  if(idx!==-1){clients[idx].clientPassword=newPass;saveClients(clients);}
+  document.getElementById('clientPassModal').classList.remove('active');
+  const c=clients[idx];
+  showToast('✓ Password reset for '+(c?.name||'client'),'success');
+}
+
+function renderClientPasswordList(){
+  const list=document.getElementById('clientPasswordList');
+  if(!list)return;
+  const clients=loadClients();
+  list.innerHTML='';
+  clients.forEach(c=>{
+    const row=document.createElement('div');
+    row.className='setting-row';
+    row.innerHTML=`
+      <div class="setting-label">${c.name}<span>${c.niche}</span></div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span style="font-size:11px;color:${c.clientPassword?'var(--green)':'var(--text3)'};">${c.clientPassword?'Password set':'No password yet'}</span>
+        <button onclick="openClientPasswordReset('${c.id}')" class="small-btn outline" style="font-size:11px;padding:5px 10px;">Reset</button>
+      </div>`;
+    list.appendChild(row);
+  });
+}
+
+// WEBHOOK
+function saveWebhookUrl(){const v=document.getElementById('webhookUrlInput').value.trim();if(!v||!v.startsWith('http')){showToast('Enter a valid URL','error');return;}localStorage.setItem('mayo_webhook',v);showToast('✓ Webhook saved!','success');}
+async function testWebhook(){
+  const url=document.getElementById('webhookUrlInput').value.trim()||localStorage.getItem('mayo_webhook');
+  const el=document.getElementById('connectionStatus');
+  el.innerHTML='<span class="thinking-dots"><span></span><span></span><span></span></span>';
+  try{await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({test:true})});el.innerHTML='<span class="status-dot"></span>Connected';document.getElementById('lastPingText').textContent='Last ping: just now';showToast('✓ Webhook responding!','success');}
+  catch(e){el.innerHTML='⚠ Unreachable';showToast('Could not reach URL','error');}
+}
+
+// TOAST
+function showToast(m,t){const toast=document.getElementById('toast');toast.className='toast '+t;toast.textContent=m;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),3500);}
+
+// CHARTS
+function initCharts(){const c=document.getElementById('postsChart');if(!c)return;const d=[3,5,2,7,4,6,3],mx=Math.max(...d);c.innerHTML='';d.forEach((v,i)=>{const b=document.createElement('div');b.className='chart-bar '+(i%2===0?'c':'p');b.style.height='0%';c.appendChild(b);setTimeout(()=>{b.style.height=(v/mx*100)+'%';},80+i*70);});}
+
+// INIT
+window.addEventListener('load',()=>{
+  const w=localStorage.getItem('mayo_webhook');
+  const el=document.getElementById('webhookUrlInput');if(w&&el)el.value=w;
+  // Populate sub-admin fields with Bryant's defaults
+  const saName=document.getElementById('sa_name');
+  const saEmail=document.getElementById('sa_email');
+  const saPass=document.getElementById('sa_password');
+  if(saName)saName.value=localStorage.getItem('mayo_sa_name')||'Bryant';
+  if(saEmail)saEmail.value=localStorage.getItem('mayo_sa_email')||'bryant@spenward.com';
+  if(saPass)saPass.value=localStorage.getItem('mayo_sa_password')||'Bspen1234$';
+  renderColors();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!e.shiftKey&&document.activeElement.id==='commandInput'){e.preventDefault();sendCommand();}
+  if(e.key==='Escape')closeClientModal();
+});
+</script>
+</body>
+</html>
