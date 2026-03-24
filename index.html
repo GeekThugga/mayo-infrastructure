@@ -863,9 +863,10 @@ let currentRole = 'admin';
 
 function getAccounts(){
   // Admin password can be changed via Settings
-  const adminPass=localStorage.getItem('mayo_admin_password')||'demo123';
+  const adminPass=localStorage.getItem('mayo_admin_password')||'demo';
   return {
-    admin:{email:'tony@sageit.com',password:adminPass,name:'Tony',role:'admin',label:'Admin · HGH'},
+    admin:{email:'tony@spenward.com',password:adminPass,name:'Tony',role:'admin',label:'Admin · HGH'},
+    client:{email:'client@demo.com',password:'client123',name:'Client Demo',role:'client',label:'Client'},
     subadmin:{
       email:localStorage.getItem('mayo_sa_email')||'bryant@spenward.com',
       password:localStorage.getItem('mayo_sa_password')||'Bspen1234$',
@@ -879,11 +880,16 @@ function applyRole(role){
   currentRole=role;
   localStorage.setItem('mayo_role',role);
   const isAdmin=role==='admin';
+  const isClient=role==='client';
   // Settings nav — admin only
   const settingsNav=document.querySelector('.nav-item[data-page="settings"]');
   if(settingsNav)settingsNav.style.display=isAdmin?'':'none';
-  // Modules nav — visible to all roles
-  // Change password link in sidebar — always show
+  // Clients nav — hidden from clients
+  const clientsNav=document.querySelector('.nav-item[data-page="clients"]');
+  if(clientsNav)clientsNav.style.display=isClient?'none':'';
+  // Active client banner — hidden from clients
+  const banner=document.querySelector('.active-client-banner');
+  if(banner)banner.style.display=isClient?'none':'';
   const acc=getAccounts()[role];
   const nameEl=document.querySelector('.sidebar-user .name');
   const roleEl=document.querySelector('.sidebar-user .role');
