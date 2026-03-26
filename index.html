@@ -296,6 +296,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 @media(max-width:1024px){.stats-grid{grid-template-columns:repeat(2,1fr);}.analytics-grid{grid-template-columns:1fr;}.modules-grid{grid-template-columns:repeat(2,1fr);}.clients-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:768px){.sidebar{transform:translateX(-100%);}.sidebar.open{transform:translateX(0);}.main-content{margin-left:0;}.stats-grid{grid-template-columns:1fr 1fr;}.page-content{padding:16px;}.modules-grid{grid-template-columns:1fr;}.clients-grid{grid-template-columns:1fr;}.mobile-menu-btn{display:flex !important;}}
 .mobile-menu-btn{display:none;width:34px;height:34px;align-items:center;justify-content:center;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);cursor:pointer;font-size:16px;}
+
+/* COMPANY SELECTOR */
+.company-select-card{
+  padding:16px 12px;border:1.5px solid var(--border2);border-radius:14px;
+  background:var(--card);cursor:pointer;transition:all 0.2s;text-align:center;
+}
+.company-select-card:hover{border-color:var(--cyan);background:rgba(0,212,255,0.06);transform:translateY(-2px);}
+.cs-avatar{
+  width:52px;height:52px;border-radius:13px;margin:0 auto 10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:900;color:#fff;overflow:hidden;
+}
+.cs-name{font-size:13px;font-weight:700;color:var(--text);}
+.cs-niche{font-size:11px;color:var(--text3);margin-top:3px;font-family:var(--mono);}
+
 </style>
 </head>
 <body>
@@ -522,378 +537,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         <div class="section-header"><h3>Client Profiles</h3><button class="small-btn" onclick="openClientModal();setTimeout(openAddForm,100)">+ Add Client</button></div>
         <div class="clients-grid" id="clientsGrid"></div>
 
-        <!-- VIDEO KPI INSIGHTS -->
-        <div style="margin-top:32px;">
-          <div class="section-header" style="margin-bottom:16px;">
-            <h3>📊 Video Ad KPI Insights</h3>
-            <span style="font-size:11px;color:var(--text2);font-family:var(--mono);">YouTube Awareness · Track across all campaigns</span>
-          </div>
-
-          <!-- KPI Table -->
-          <div style="background:var(--surface2);border-radius:14px;overflow:hidden;border:1px solid var(--border);">
-            <table style="width:100%;border-collapse:collapse;">
-              <thead>
-                <tr style="background:var(--bg3);">
-                  <th style="padding:12px 16px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);border-bottom:1px solid var(--border);">KPI</th>
-                  <th style="padding:12px 16px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);border-bottom:1px solid var(--border);">What It Tells You</th>
-                  <th style="padding:12px 16px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);border-bottom:1px solid var(--border);">Where to Find It</th>
-                  <th style="padding:12px 16px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);border-bottom:1px solid var(--border);">Benchmark</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style="border-bottom:1px solid var(--border);transition:background 0.15s;" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='transparent'">
-                  <td style="padding:14px 16px;">
-                    <span style="display:inline-flex;align-items:center;gap:8px;">
-                      <span style="width:8px;height:8px;border-radius:50%;background:var(--cyan);flex-shrink:0;"></span>
-                      <span style="font-weight:700;font-size:13px;color:var(--text);">View Rate</span>
-                    </span>
-                  </td>
-                  <td style="padding:14px 16px;font-size:12px;color:var(--text2);">% of people who watched vs skipped</td>
-                  <td style="padding:14px 16px;font-size:11px;color:var(--cyan);font-family:var(--mono);">Campaigns → Columns → Video</td>
-                  <td style="padding:14px 16px;"><span style="font-size:11px;padding:3px 9px;border-radius:6px;background:rgba(0,212,255,0.1);color:var(--cyan);font-family:var(--mono);">&gt; 30%</span></td>
-                </tr>
-                <tr style="border-bottom:1px solid var(--border);transition:background 0.15s;" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='transparent'">
-                  <td style="padding:14px 16px;">
-                    <span style="display:inline-flex;align-items:center;gap:8px;">
-                      <span style="width:8px;height:8px;border-radius:50%;background:var(--purple);flex-shrink:0;"></span>
-                      <span style="font-weight:700;font-size:13px;color:var(--text);">Impressions</span>
-                    </span>
-                  </td>
-                  <td style="padding:14px 16px;font-size:12px;color:var(--text2);">How many times the ad was shown</td>
-                  <td style="padding:14px 16px;font-size:11px;color:var(--cyan);font-family:var(--mono);">Default dashboard</td>
-                  <td style="padding:14px 16px;"><span style="font-size:11px;padding:3px 9px;border-radius:6px;background:rgba(155,109,255,0.1);color:var(--purple);font-family:var(--mono);">Scale up</span></td>
-                </tr>
-                <tr style="border-bottom:1px solid var(--border);transition:background 0.15s;" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='transparent'">
-                  <td style="padding:14px 16px;">
-                    <span style="display:inline-flex;align-items:center;gap:8px;">
-                      <span style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></span>
-                      <span style="font-weight:700;font-size:13px;color:var(--text);">CPV</span>
-                    </span>
-                  </td>
-                  <td style="padding:14px 16px;font-size:12px;color:var(--text2);">Cost per view — efficiency of spend</td>
-                  <td style="padding:14px 16px;font-size:11px;color:var(--cyan);font-family:var(--mono);">Campaigns → Columns</td>
-                  <td style="padding:14px 16px;"><span style="font-size:11px;padding:3px 9px;border-radius:6px;background:rgba(0,229,160,0.1);color:var(--green);font-family:var(--mono);">&lt; $0.05</span></td>
-                </tr>
-                <tr style="border-bottom:1px solid var(--border);transition:background 0.15s;" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='transparent'">
-                  <td style="padding:14px 16px;">
-                    <span style="display:inline-flex;align-items:center;gap:8px;">
-                      <span style="width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0;"></span>
-                      <span style="font-weight:700;font-size:13px;color:var(--text);">Completion Rate</span>
-                    </span>
-                  </td>
-                  <td style="padding:14px 16px;font-size:12px;color:var(--text2);">% who watched to the end</td>
-                  <td style="padding:14px 16px;font-size:11px;color:var(--cyan);font-family:var(--mono);">Video reporting columns</td>
-                  <td style="padding:14px 16px;"><span style="font-size:11px;padding:3px 9px;border-radius:6px;background:rgba(255,184,0,0.1);color:var(--amber);font-family:var(--mono);">&gt; 25%</span></td>
-                </tr>
-                <tr style="border-bottom:1px solid var(--border);transition:background 0.15s;" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='transparent'">
-                  <td style="padding:14px 16px;">
-                    <span style="display:inline-flex;align-items:center;gap:8px;">
-                      <span style="width:8px;height:8px;border-radius:50%;background:#FF6B6B;flex-shrink:0;"></span>
-                      <span style="font-weight:700;font-size:13px;color:var(--text);">CTR</span>
-                    </span>
-                  </td>
-                  <td style="padding:14px 16px;font-size:12px;color:var(--text2);">% who clicked through after watching</td>
-                  <td style="padding:14px 16px;font-size:11px;color:var(--cyan);font-family:var(--mono);">Default dashboard</td>
-                  <td style="padding:14px 16px;"><span style="font-size:11px;padding:3px 9px;border-radius:6px;background:rgba(255,107,107,0.1);color:#FF6B6B;font-family:var(--mono);">&gt; 0.5%</span></td>
-                </tr>
-                <tr style="transition:background 0.15s;" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='transparent'">
-                  <td style="padding:14px 16px;">
-                    <span style="display:inline-flex;align-items:center;gap:8px;">
-                      <span style="width:8px;height:8px;border-radius:50%;background:#A78BFA;flex-shrink:0;"></span>
-                      <span style="font-weight:700;font-size:13px;color:var(--text);">Frequency</span>
-                    </span>
-                  </td>
-                  <td style="padding:14px 16px;font-size:12px;color:var(--text2);">How often the same person sees it</td>
-                  <td style="padding:14px 16px;font-size:11px;color:var(--cyan);font-family:var(--mono);">Audience insights</td>
-                  <td style="padding:14px 16px;"><span style="font-size:11px;padding:3px 9px;border-radius:6px;background:rgba(167,139,250,0.1);color:#A78BFA;font-family:var(--mono);">2–4x ideal</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Pro Tip -->
-          <div style="margin-top:14px;padding:14px 16px;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15);border-radius:12px;display:flex;gap:12px;align-items:flex-start;">
-            <span style="font-size:16px;flex-shrink:0;">💡</span>
-            <div>
-              <div style="font-size:12px;font-weight:700;color:var(--cyan);margin-bottom:4px;">Pro Tip — YouTube Awareness Campaigns</div>
-              <div style="font-size:12px;color:var(--text2);line-height:1.6;">Focus on <strong style="color:var(--text);">View Rate + Completion Rate</strong> first — if people aren't watching, fix the creative before scaling spend. A high Frequency with low CTR means the audience is seeing it but not clicking — adjust targeting or add a stronger CTA.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- MODULES -->
-    <div class="page" id="page-modules">
-      <div class="page-content">
-        <div class="modules-grid">
-          <div class="module-card active-module"><div class="module-icon" style="background:rgba(0,212,255,0.08);">💬</div><h4>Social Media Poster</h4><p>AI-generated captions posted to FB & IG via HGH</p><span class="module-status live">Live</span></div>
-          <div class="module-card active-module"><div class="module-icon" style="background:rgba(155,109,255,0.08);">🎙</div><h4>Voice Commands</h4><p>Hands-free posting via voice transcription</p><span class="module-status live">Live</span></div>
-          <div class="module-card active-module"><div class="module-icon" style="background:rgba(224,64,251,0.08);">📅</div><h4>Post Scheduling</h4><p>Schedule posts via natural language</p><span class="module-status live">Live</span></div>
-          <div class="module-card active-module"><div class="module-icon" style="background:rgba(0,229,160,0.08);">🖼</div><h4>Image Analysis</h4><p>Claude analyzes images to tailor captions</p><span class="module-status live">Live</span></div>
-          <div class="module-card active-module"><div class="module-icon" style="background:rgba(155,109,255,0.08);">👥</div><h4>Multi-Client</h4><p>Switch between clients — each with their own HGH ID and webhook</p><span class="module-status live">Live</span></div>
-          <div class="module-card coming-soon-module"><div class="module-icon" style="background:rgba(255,184,0,0.08);">💡</div><h4>Lead Generation</h4><p>Google Sheets integration for lead management</p><span class="module-status soon">Coming Soon</span></div>
-          <div class="module-card coming-soon-module"><div class="module-icon" style="background:rgba(79,70,229,0.08);">📊</div><h4>Ad Insights</h4><p>FB & IG ad performance metrics</p><span class="module-status soon">Coming Soon</span></div>
-          <div class="module-card coming-soon-module"><div class="module-icon" style="background:rgba(16,185,129,0.08);">✉</div><h4>Email Campaigns</h4><p>Automated email sequences</p><span class="module-status soon">Coming Soon</span></div>
-          <div class="module-card coming-soon-module"><div class="module-icon" style="background:rgba(0,212,255,0.08);">🤖</div><h4>AI Chat Agent</h4><p>24/7 AI chatbot for client sites</p><span class="module-status soon">Coming Soon</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SETTINGS -->
-    <div class="page" id="page-settings">
-      <div class="page-content">
-        <div class="settings-section">
-          <h4>Main Webhook</h4>
-          <div class="setting-row">
-            <div class="setting-label">n8n Webhook URL<span>One main webhook — HGH ID in payload routes each client</span></div>
-            <div style="display:flex;gap:8px;align-items:center;flex:1;max-width:460px;">
-              <input type="text" id="webhookUrlInput" class="inline-input" style="font-family:'SF Mono','Fira Code',monospace;font-size:11px;" placeholder="https://your-n8n.com/webhook/mayo">
-              <button onclick="saveWebhookUrl()" class="small-btn">Save</button>
-            </div>
-          </div>
-          <div class="setting-row">
-            <div class="setting-label">Connection Status<span id="lastPingText">Last ping: 2 seconds ago</span></div>
-            <div style="display:flex;gap:8px;align-items:center;">
-              <div class="status-badge" style="font-size:11px;" id="connectionStatus"><span class="status-dot"></span>Connected</div>
-              <button onclick="testWebhook()" class="small-btn outline">Test</button>
-            </div>
-          </div>
-        </div>
-        <div class="settings-section">
-          <h4>Preferences</h4>
-          <div class="setting-row"><div class="setting-label">Post Notifications<span>Get notified when posts are published</span></div><div class="toggle active" onclick="this.classList.toggle('active')"></div></div>
-          <div class="setting-row"><div class="setting-label">Voice Auto-Submit<span>Automatically send after voice recording ends</span></div><div class="toggle" onclick="this.classList.toggle('active')"></div></div>
-        </div>
-        <div class="settings-section">
-          <h4>n8n Payload Structure</h4>
-          <div style="background:var(--bg3);border-radius:10px;padding:16px;font-family:'SF Mono','Fira Code',monospace;font-size:12px;color:var(--text2);line-height:1.8;">
-            <span style="color:var(--text3)">// Sent to your one n8n webhook on every post</span><br>
-            {<br>&nbsp;&nbsp;<span style="color:var(--cyan)">"client_name"</span>: <span style="color:var(--green)">"Shot Doctor"</span>,<br>
-            &nbsp;&nbsp;<span style="color:var(--cyan)">"hgh_id"</span>: <span style="color:var(--green)">"angLr7uC9e5yltccWprT"</span>,<br>
-            &nbsp;&nbsp;<span style="color:var(--cyan)">"niche"</span>: <span style="color:var(--green)">"Sports &amp; Fitness"</span>,<br>
-            &nbsp;&nbsp;<span style="color:var(--cyan)">"platform"</span>: <span style="color:var(--green)">"all | facebook | instagram | tiktok | linkedin"</span>,<br>
-            &nbsp;&nbsp;<span style="color:var(--cyan)">"active_platforms"</span>: <span style="color:var(--green)">["facebook","instagram","tiktok","linkedin"]</span>,<br>
-            &nbsp;&nbsp;<span style="color:var(--cyan)">"caption"</span>: <span style="color:var(--green)">"Claude-generated caption"</span>,<br>
-            &nbsp;&nbsp;<span style="color:var(--cyan)">"command"</span>: <span style="color:var(--green)">"user's original command"</span>,<br>
-            &nbsp;&nbsp;<span style="color:var(--cyan)">"timestamp"</span>: <span style="color:var(--green)">"ISO 8601"</span><br>}
-          </div>
-        </div>
-        <div class="settings-section">
-          <h4>👤 Sub-Admin Account</h4>
-          <div class="setting-row">
-            <div class="setting-label">Name<span>Displayed in sidebar when they log in</span></div>
-            <input type="text" class="inline-input" id="sa_name" placeholder="Bryant" style="max-width:260px;">
-          </div>
-          <div class="setting-row">
-            <div class="setting-label">Email<span>Sub-admin login email</span></div>
-            <input type="text" class="inline-input" id="sa_email" placeholder="bryant@spenward.com" style="max-width:260px;">
-          </div>
-          <div class="setting-row">
-            <div class="setting-label">Password<span>You can reset this anytime</span></div>
-            <div style="display:flex;gap:8px;align-items:center;flex:1;max-width:260px;">
-              <input type="password" class="inline-input" id="sa_password" placeholder="Sub-admin password">
-              <button onclick="saveSubAdmin()" class="small-btn">Save</button>
-            </div>
-          </div>
-          <div style="padding:8px 0 4px;">
-            <div style="font-size:11px;color:var(--text3);line-height:1.7;">
-              Sub-admin can: view &amp; switch all clients, edit profiles, create posts, view analytics.<br>
-              Sub-admin cannot: add/delete clients, view workflow URLs, access Settings or Modules.
-            </div>
-          </div>
-        </div>
-        <div class="settings-section">
-          <h4>🔐 Admin Password</h4>
-          <div class="setting-row">
-            <div class="setting-label">Current Password<span>Your login password</span></div>
-            <input type="password" class="inline-input" id="admin_current_pass" placeholder="Current password" style="max-width:200px;">
-          </div>
-          <div class="setting-row">
-            <div class="setting-label">New Password<span>Must be at least 8 characters</span></div>
-            <div style="display:flex;gap:8px;align-items:center;flex:1;max-width:260px;">
-              <input type="password" class="inline-input" id="admin_new_pass" placeholder="New password">
-              <button onclick="changeAdminPassword()" class="small-btn">Update</button>
-            </div>
-          </div>
-        </div>
-        <div class="settings-section">
-          <h4>🗝 Client Password Reset</h4>
-          <p style="font-size:12px;color:var(--text2);margin-bottom:14px;">Reset the MAYO app login password for any client. Sub-admin can also do this from the Clients page.</p>
-          <div id="clientPasswordList"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-    <!-- AD INSIGHTS / CLIENT METRICS -->
-    <div class="page" id="page-metrics">
-      <div class="page-content">
-
-        <!-- Header -->
-        <div class="section-header" style="margin-bottom:8px;">
-          <h3>📊 Ad Insights</h3>
-          <button class="small-btn" onclick="metricsOpenAddCampaign()">+ Add Campaign</button>
-        </div>
-        <p style="font-size:12px;color:var(--text2);margin-bottom:24px;">Track paid campaigns across all clients · YouTube, Meta, Google · Real-time KPI monitoring</p>
-
-        <!-- Agency Overview Strip -->
-        <div id="metricsAgencyStrip" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;"></div>
-
-        <!-- Client Filter Tabs -->
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;" id="metricsClientTabs"></div>
-
-        <!-- Campaigns Table -->
-        <div style="background:var(--surface2);border-radius:14px;overflow:hidden;border:1px solid var(--border);margin-bottom:24px;">
-          <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
-            <div style="font-size:13px;font-weight:700;" id="metricsCampaignTitle">All Campaigns</div>
-            <div style="display:flex;gap:8px;">
-              <select id="metricsPlatFilter" onchange="metricsRender()" style="padding:6px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:11px;font-family:var(--mono);">
-                <option value="all">All Platforms</option>
-                <option value="youtube">YouTube</option>
-                <option value="meta">Meta</option>
-                <option value="google">Google</option>
-              </select>
-              <select id="metricsStatusFilter" onchange="metricsRender()" style="padding:6px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:11px;font-family:var(--mono);">
-                <option value="all">All Status</option>
-                <option value="active">Active</option>
-                <option value="paused">Paused</option>
-                <option value="ended">Ended</option>
-              </select>
-            </div>
-          </div>
-          <div style="overflow-x:auto;">
-            <table style="width:100%;border-collapse:collapse;min-width:900px;">
-              <thead>
-                <tr style="background:var(--bg3);">
-                  <th style="padding:11px 16px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);white-space:nowrap;">Client</th>
-                  <th style="padding:11px 16px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);white-space:nowrap;">Campaign</th>
-                  <th style="padding:11px 16px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);white-space:nowrap;">Platform</th>
-                  <th style="padding:11px 16px;text-align:right;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);white-space:nowrap;">Budget</th>
-                  <th style="padding:11px 16px;text-align:right;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);white-space:nowrap;">Spend</th>
-                  <th style="padding:11px 16px;text-align:right;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);white-space:nowrap;">Impressions</th>
-                  <th style="padding:11px 16px;text-align:right;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);white-space:nowrap;">Views</th>
-                  <th style="padding:11px 16px;text-align:right;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);white-space:nowrap;">CPV</th>
-                  <th style="padding:11px 16px;text-align:right;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);white-space:nowrap;">CTR</th>
-                  <th style="padding:11px 16px;text-align:right;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);white-space:nowrap;">Clicks</th>
-                  <th style="padding:11px 16px;text-align:center;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);white-space:nowrap;">Status</th>
-                  <th style="padding:11px 16px;text-align:center;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);white-space:nowrap;">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="metricsCampaignRows"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- KPI Reference -->
-        <div style="background:var(--surface2);border-radius:14px;border:1px solid var(--border);overflow:hidden;">
-          <div style="padding:12px 18px;border-bottom:1px solid var(--border);">
-            <span style="font-size:12px;font-weight:700;">📖 KPI Benchmarks</span>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;">
-            <div style="padding:14px 18px;border-right:1px solid var(--border);">
-              <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:6px;">VIEW RATE</div>
-              <div style="font-size:13px;font-weight:700;color:var(--cyan);">&gt; 30%</div>
-              <div style="font-size:11px;color:var(--text2);margin-top:3px;">% watched vs skipped</div>
-            </div>
-            <div style="padding:14px 18px;border-right:1px solid var(--border);">
-              <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:6px;">CPV TARGET</div>
-              <div style="font-size:13px;font-weight:700;color:var(--green);">&lt; $0.05</div>
-              <div style="font-size:11px;color:var(--text2);margin-top:3px;">Cost per TrueView</div>
-            </div>
-            <div style="padding:14px 18px;">
-              <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:6px;">CTR TARGET</div>
-              <div style="font-size:13px;font-weight:700;color:var(--amber);">&gt; 0.5%</div>
-              <div style="font-size:11px;color:var(--text2);margin-top:3px;">Click-through rate</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div><!-- end page-metrics -->
-
-    <!-- ADD/EDIT CAMPAIGN MODAL -->
-    <div class="modal-overlay" id="metricsCampaignModal" style="display:none;">
-      <div class="modal" style="max-width:560px;">
-        <div class="modal-header">
-          <h3 id="metricsCampaignModalTitle">Add Campaign</h3>
-          <button class="modal-close" onclick="metricsCloseModal()">✕</button>
-        </div>
-        <div style="padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-          <div style="grid-column:1/-1;">
-            <label style="font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:6px;">CLIENT</label>
-            <select id="mCampaignClient" style="width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;">
-              <option value="">Select client...</option>
-              <option value="cfm">CFM Security</option>
-              <option value="kwlegacy">KW Legacy</option>
-              <option value="aone">A-One Facility</option>
-              <option value="roofnation">ROOFNation</option>
-            </select>
-          </div>
-          <div style="grid-column:1/-1;">
-            <label style="font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:6px;">CAMPAIGN NAME</label>
-            <input type="text" id="mCampaignName" placeholder="e.g. CFM Security — Birmingham YouTube Q1" style="width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;">
-          </div>
-          <div>
-            <label style="font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:6px;">PLATFORM</label>
-            <select id="mCampaignPlatform" style="width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;">
-              <option value="youtube">YouTube</option>
-              <option value="meta">Meta (FB/IG)</option>
-              <option value="google">Google Search</option>
-            </select>
-          </div>
-          <div>
-            <label style="font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:6px;">OBJECTIVE</label>
-            <select id="mCampaignObjective" style="width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;">
-              <option value="awareness">Awareness</option>
-              <option value="traffic">Traffic</option>
-              <option value="conversions">Conversions</option>
-              <option value="leads">Lead Gen</option>
-            </select>
-          </div>
-          <div>
-            <label style="font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:6px;">BUDGET ($)</label>
-            <input type="number" id="mCampaignBudget" placeholder="500" style="width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;">
-          </div>
-          <div>
-            <label style="font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:6px;">SPEND TO DATE ($)</label>
-            <input type="number" id="mCampaignSpend" placeholder="0" style="width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;">
-          </div>
-          <div>
-            <label style="font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:6px;">IMPRESSIONS</label>
-            <input type="number" id="mCampaignImpressions" placeholder="0" style="width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;">
-          </div>
-          <div>
-            <label style="font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:6px;">TRUEVIEW VIEWS</label>
-            <input type="number" id="mCampaignViews" placeholder="0" style="width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;">
-          </div>
-          <div>
-            <label style="font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:6px;">CTR (%)</label>
-            <input type="number" id="mCampaignCTR" placeholder="0.5" step="0.01" style="width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;">
-          </div>
-          <div>
-            <label style="font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:6px;">BOOKING PAGE CLICKS</label>
-            <input type="number" id="mCampaignClicks" placeholder="0" style="width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;">
-          </div>
-          <div>
-            <label style="font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:6px;">STATUS</label>
-            <select id="mCampaignStatus" style="width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;">
-              <option value="active">Active</option>
-              <option value="paused">Paused</option>
-              <option value="ended">Ended</option>
-            </select>
-          </div>
-          <div>
-            <label style="font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:6px;">GEO TARGET</label>
-            <input type="text" id="mCampaignGeo" placeholder="e.g. Birmingham, AL" style="width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;">
-          </div>
-          <div style="grid-column:1/-1;display:flex;justify-content:flex-end;gap:10px;margin-top:4px;">
-            <button onclick="metricsCloseModal()" style="padding:10px 20px;background:transparent;border:1px solid var(--border2);border-radius:10px;color:var(--text2);font-size:13px;cursor:pointer;">Cancel</button>
-            <button onclick="metricsSaveCampaign()" style="padding:10px 24px;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;border-radius:10px;color:#000;font-size:13px;font-weight:700;cursor:pointer;">Save Campaign</button>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -995,6 +638,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
           <button class="platform-toggle" id="pt_li" onclick="togglePT('li')">💼 LinkedIn</button>
         </div>
       </div>
+            <!-- CLIENT USERS MANAGEMENT — Admin/Subadmin only -->
+      <div class="form-section" id="clientUsersSection">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div class="form-label" style="margin-bottom:0;">👥 Portal Users <span style="font-size:9px;color:var(--text3);font-weight:500;text-transform:none;">(Who can log in to this company's dashboard)</span></div>
+          <button type="button" onclick="clientUserAddRow()" style="padding:5px 12px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);border-radius:8px;color:var(--cyan);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--sans);">+ Add User</button>
+        </div>
+        <div id="clientUsersTable" style="display:flex;flex-direction:column;gap:8px;"></div>
+        <div style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.6;">
+          <strong style="color:var(--text2);">Admin</strong> — can post, edit settings, view analytics &nbsp;·&nbsp;
+          <strong style="color:var(--text2);">User</strong> — read-only view only
+        </div>
+      </div>
+<!-- LINKED COMPANIES — Admin/Subadmin only -->
+      <div class="form-section" id="linkedClientsSection" style="display:none;">
+        <div class="form-label">🔗 Linked Companies <span style="font-size:9px;color:var(--text3);font-weight:500;text-transform:none;">(Client can switch between these after login)</span></div>
+        <div id="linkedClientsCheckboxes" style="display:flex;flex-direction:column;gap:8px;margin-top:8px;max-height:160px;overflow-y:auto;padding:10px;background:var(--bg3);border-radius:10px;border:1px solid var(--border);"></div>
+        <div style="font-size:11px;color:var(--text3);margin-top:6px;">Select other clients this contact has access to. They'll see a company selector after login.</div>
+      </div>
 
       <div class="form-actions">
         <button class="btn-cancel" onclick="showClientList()">Cancel</button>
@@ -1073,7 +734,7 @@ let editingClientId=null;
 let ptToggles={fb:true,ig:true,tt:false,li:false};
 let selectedColor='#9B6DFF';
 const COLORS=['#9B6DFF','#00D4FF','#E040FB','#00E5A0','#FFB800','#FF4D6A','#4F46E5','#EC4899','#F97316','#06B6D4'];
-const DEFAULT_CLIENTS=[{id:'c1',name:'Shot Doctor',niche:'Sports & Fitness',hghId:'angLr7uC9e5yltccWprT',logo:'',webhook:'',fbAdId:'',googleAdsId:'',youtubeId:'',gaId:'',platforms:{fb:true,ig:true,tt:false,li:false},color:'#9B6DFF'}];
+const DEFAULT_CLIENTS=[{id:'c1',name:'Shot Doctor',niche:'Sports & Fitness',hghId:'angLr7uC9e5yltccWprT',logo:'',webhook:'',fbAdId:'',googleAdsId:'',youtubeId:'',gaId:'',platforms:{fb:true,ig:true,tt:false,li:false},color:'#9B6DFF',clientEmail:'shotdoctor@client.com',clientPassword:'',linkedClients:[],users:[]}];
 
 // THEME
 function setLogoForTheme(isDark){
@@ -1119,8 +780,8 @@ function setActiveClient(id){
 function updateClientUI(){
   const c=getActiveClient();if(!c)return;
   document.getElementById('sidebarClientName').textContent=c.name;
-  const sa=document.getElementById('sidebarClientAvatar');sa.textContent=getInitial(c.name);sa.style.background=c.color;
-  const ta=document.getElementById('topbarClientAvatar');ta.textContent=getInitial(c.name);ta.style.background=c.color;
+  const sa=document.getElementById('sidebarClientAvatar');if(c.logo){sa.innerHTML=`<img src="${c.logo}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" onerror="this.parentElement.textContent='${getInitial(c.name)}'">`;sa.style.background='transparent';}else{if(c.logo){sa.innerHTML='<img src="'+c.logo+'" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;background:white;padding:2px;">';sa.style.background='transparent';}else{sa.textContent=getInitial(c.name);sa.style.background=c.color;}}
+  const ta=document.getElementById('topbarClientAvatar');if(c.logo){ta.innerHTML=`<img src="${c.logo}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" onerror="this.parentElement.textContent='${getInitial(c.name)}'">`;ta.style.background='transparent';}else{if(c.logo){ta.innerHTML='<img src="'+c.logo+'" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;background:white;padding:2px;">';ta.style.background='transparent';}else{ta.textContent=getInitial(c.name);ta.style.background=c.color;}}
   document.getElementById('topbarClientName').textContent=c.name;
   const sub=document.getElementById('commandSubtext');
   if(sub)sub.innerHTML=`Creating for <strong>${c.name}</strong> — describe what you want to post.`;
@@ -1132,11 +793,9 @@ function updateClientUI(){
 let currentRole = 'admin';
 
 function getAccounts(){
-  // Admin password can be changed via Settings
   const adminPass=localStorage.getItem('mayo_admin_password')||'demo';
-  return {
+  const accounts={
     admin:{email:'tony@spenward.com',password:adminPass,name:'Tony',role:'admin',label:'Admin · HGH'},
-    client:{email:'client@demo.com',password:'client123',name:'Client Demo',role:'client',label:'Client'},
     subadmin:{
       email:localStorage.getItem('mayo_sa_email')||'bryant@spenward.com',
       password:localStorage.getItem('mayo_sa_password')||'Bspen1234$',
@@ -1144,13 +803,46 @@ function getAccounts(){
       role:'subadmin',label:'Sub-Admin · HGH'
     }
   };
+  // Build per-client accounts from users array
+  loadClients().forEach(c=>{
+    // Legacy: single clientEmail/password on the client object
+    if(c.clientEmail&&c.clientPassword){
+      accounts['client_'+c.id]={
+        email:c.clientEmail.toLowerCase(),
+        password:c.clientPassword,
+        name:c.name,
+        role:'client_admin',
+        clientId:c.id,
+        linkedClients:c.linkedClients||[],
+        label:c.name+' (Admin)'
+      };
+    }
+    // New: users array with individual roles
+    (c.users||[]).forEach(u=>{
+      if(u.email&&u.password){
+        const key='user_'+c.id+'_'+u.id;
+        accounts[key]={
+          email:u.email.toLowerCase(),
+          password:u.password,
+          name:u.name,
+          role:u.role==='admin'?'client_admin':'client_user',
+          clientId:c.id,
+          linkedClients:(u.linkedClients||[]),
+          label:u.name+' · '+c.name
+        };
+      }
+    });
+  });
+  return accounts;
 }
 
 function applyRole(role){
   currentRole=role;
   localStorage.setItem('mayo_role',role);
   const isAdmin=role==='admin';
-  const isClient=role==='client';
+  const isClient=role==='client'||role==='client_admin'||role==='client_user';
+  const isClientAdmin=role==='client_admin';
+  const isClientUser=role==='client_user';
   // Settings nav — admin only
   const settingsNav=document.querySelector('.nav-item[data-page="settings"]');
   if(settingsNav)settingsNav.style.display=isAdmin?'':'none';
@@ -1165,6 +857,13 @@ function applyRole(role){
   const roleEl=document.querySelector('.sidebar-user .role');
   if(nameEl)nameEl.textContent=acc.name;
   if(roleEl)roleEl.textContent=acc.label;
+  // Client User (read-only) restrictions
+  const postBtns=document.querySelectorAll('.post-btn,.cc-btn.primary,[onclick*="switchPage(\'dashboard\')"]');
+  if(isClientUser){
+    postBtns.forEach(b=>b.style.display='none');
+    const postNav=document.querySelector('.nav-item[data-page="posts"]');
+    if(postNav) postNav.style.opacity='0.4';
+  }
 }
 
 // LOGIN
@@ -1173,17 +872,65 @@ function handleLogin(){
   const p=document.getElementById('loginPassword').value;
   if(!e||!p){showToast('Please enter email and password','error');return;}
   const accounts=getAccounts();
-  let matchedRole=null;
+  let matchedRole=null, matchedAccount=null;
   for(const[role,acc] of Object.entries(accounts)){
-    if(e===acc.email.toLowerCase()&&p===acc.password){matchedRole=role;break;}
+    if(e===acc.email.toLowerCase()&&p===acc.password){matchedRole=role;matchedAccount=acc;break;}
   }
   if(!matchedRole){showToast('Invalid email or password','error');return;}
+  
+  // Client with multiple linked companies — show selector
+  if(matchedAccount.role==='client' && matchedAccount.linkedClients && matchedAccount.linkedClients.length>0){
+    pendingLoginAccount=matchedAccount;
+    showCompanySelector(matchedAccount);
+    return;
+  }
+  
+  // Single client or admin/subadmin — log in directly
+  completLogin(matchedAccount, matchedAccount.clientId||null);
+}
+
+let pendingLoginAccount=null;
+
+function showCompanySelector(account){
+  const clients=loadClients();
+  // Build list: their own company + linked companies
+  const accessIds=[account.clientId, ...account.linkedClients];
+  const accessClients=accessIds.map(id=>clients.find(c=>c.id===id)).filter(Boolean);
+  
+  const overlay=document.getElementById('loginScreen');
+  const box=overlay.querySelector('.login-box')||overlay.querySelector('div[style*="border-radius"]');
+  
+  document.getElementById('companySelectOverlay').style.display='flex';
+  const grid=document.getElementById('companySelectorGrid');
+  grid.innerHTML=accessClients.map(c=>`
+    <div class="company-select-card" onclick="selectCompanyAndLogin('${c.id}')">
+      <div class="cs-avatar" style="background:${c.logo?'#fff':c.color}">
+        ${c.logo?`<img src="${c.logo}" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;background:white;padding:3px;">`:''}
+        ${!c.logo?c.name[0].toUpperCase():''}
+      </div>
+      <div class="cs-name">${c.name}</div>
+      <div class="cs-niche">${c.niche||''}</div>
+    </div>
+  `).join('');
+}
+
+function selectCompanyAndLogin(clientId){
+  document.getElementById('companySelectOverlay').style.display='none';
+  completLogin(pendingLoginAccount, clientId);
+  pendingLoginAccount=null;
+}
+
+function completLogin(account, clientId){
   setTimeout(()=>{
     document.getElementById('loginScreen').classList.add('hidden');
-    document.getElementById('appContainer').classList.add('active');
-    applyRole(matchedRole);
-    updateClientUI();initCharts();renderClientsGrid();
-  },700);
+    document.getElementById('mainApp').classList.remove('hidden');
+  },200);
+  applyRole(account.role);
+  if(clientId) setActiveClient(clientId);
+  else if(loadClients().length>0) setActiveClient(loadClients()[0].id);
+  showToast('Welcome, '+account.name+'!','success');
+  renderClientsGrid();
+  switchPage('dashboard');
 }
 function handleLogout(){
   document.getElementById('appContainer').classList.remove('active');
@@ -1234,6 +981,13 @@ function renderClientList(){
   });
 }
 
+function renderAvatar(c){
+  if(c.logo){
+    return '<img src="'+c.logo+'" alt="'+c.name+'" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;background:white;padding:3px;" onerror="this.style.display=\'none\'">';
+  }
+  return getInitial(c.name);
+}
+
 function renderClientsGrid(){
   const clients=loadClients(),active=getActiveClient();
   const grid=document.getElementById('clientsGrid');if(!grid)return;
@@ -1245,7 +999,7 @@ function renderClientsGrid(){
     div.className='client-card'+(isActive?' active-card':'');
     div.innerHTML=`
       ${isActive?'<span class="cc-badge">Active</span>':''}
-      <div class="cc-avatar" style="background:${c.color}">${getInitial(c.name)}</div>
+      <div class="cc-avatar" style="background:${c.logo?'#fff':c.color};">${renderAvatar(c)}</div>
       <div class="cc-name">${c.name}</div>
       <div class="cc-niche">${c.niche}</div>
       <div class="cc-meta">
@@ -1258,7 +1012,40 @@ function renderClientsGrid(){
         <button class="cc-btn" onclick="openClientPasswordReset('${c.id}')" title="Reset client password">🔑</button>
         ${!isActive?`<button class="cc-btn" onclick="setActiveClient('${c.id}')">Switch To</button>`:''}
         <button class="cc-btn primary" onclick="setActiveClient('${c.id}');switchPage('dashboard')">Post Now</button>
-      </div>`;
+      </div>
+      <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,0.07);padding-top:12px;">
+        <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='grid'?'none':'grid'"
+             style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:2px 0;">
+          <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-family:var(--mono);">📊 Video KPI Benchmarks</span>
+          <span style="font-size:9px;color:var(--text3);">▾</span>
+        </div>
+        <div style="display:none;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;">
+          <div style="background:var(--bg3);border-radius:8px;padding:8px 10px;">
+            <div style="font-size:9px;color:var(--text3);font-family:var(--mono);letter-spacing:0.5px;">VIEW RATE</div>
+            <div style="font-size:13px;font-weight:800;color:var(--cyan);margin-top:3px;">&gt; 30%</div>
+            <div style="font-size:9px;color:var(--text3);margin-top:2px;">% watched vs skipped</div>
+          </div>
+          <div style="background:var(--bg3);border-radius:8px;padding:8px 10px;">
+            <div style="font-size:9px;color:var(--text3);font-family:var(--mono);letter-spacing:0.5px;">CPV</div>
+            <div style="font-size:13px;font-weight:800;color:var(--green);margin-top:3px;">&lt; $0.05</div>
+            <div style="font-size:9px;color:var(--text3);margin-top:2px;">Cost per TrueView</div>
+          </div>
+          <div style="background:var(--bg3);border-radius:8px;padding:8px 10px;">
+            <div style="font-size:9px;color:var(--text3);font-family:var(--mono);letter-spacing:0.5px;">CTR</div>
+            <div style="font-size:13px;font-weight:800;color:var(--amber);margin-top:3px;">&gt; 0.5%</div>
+            <div style="font-size:9px;color:var(--text3);margin-top:2px;">Click-through rate</div>
+          </div>
+          <div style="background:var(--bg3);border-radius:8px;padding:8px 10px;">
+            <div style="font-size:9px;color:var(--text3);font-family:var(--mono);letter-spacing:0.5px;">FREQUENCY</div>
+            <div style="font-size:13px;font-weight:800;color:var(--purple);margin-top:3px;">2–4x</div>
+            <div style="font-size:9px;color:var(--text3);margin-top:2px;">Ideal per audience</div>
+          </div>
+          <div style="grid-column:1/-1;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.12);border-radius:8px;padding:8px 10px;">
+            <div style="font-size:10px;color:var(--text2);line-height:1.6;">💡 Fix creative before scaling if View Rate is low. High Frequency + low CTR = adjust targeting or add stronger CTA.</div>
+          </div>
+        </div>
+      </div>
+      `;
     grid.appendChild(div);
   });
   // Only admin can add clients
@@ -1296,6 +1083,7 @@ function openAddForm(){
   selectedColor=COLORS[0];renderColors();
   document.getElementById('clientListView').style.display='none';
   document.getElementById('clientForm').classList.add('show');
+  initNewClientForm();
 }
 
 function editClient(id){
@@ -1311,9 +1099,17 @@ function editClient(id){
   document.getElementById('cf_google_ads_id').value=c.googleAdsId||'';
   document.getElementById('cf_youtube_id').value=c.youtubeId||'';
   document.getElementById('cf_ga_id').value=c.gaId||'';
+  // Client portal users
+  initClientUsersTable(c.users||[]);
+  // Linked companies checkboxes — only for admin/subadmin
+  const linkedSection=document.getElementById('linkedClientsSection');
+  if(linkedSection&&(currentRole==='admin'||currentRole==='subadmin')){
+    linkedSection.style.display='';
+    renderLinkedClientsCheckboxes(c.id, c.linkedClients||[]);
+  }
   // Update logo preview
   const preview=document.getElementById('cf_logo_preview');
-  if(c.logo){preview.innerHTML=`<img src="${c.logo}" style="max-height:40px;max-width:100%;object-fit:contain;">`;}
+  if(c.logo){preview.innerHTML='<img src="'+c.logo+'" style="max-height:40px;max-width:100%;object-fit:contain;">';}
   else{preview.innerHTML='<span style="font-size:11px;color:var(--text3);">Enter URL to preview</span>';}
   const webhookRow=document.getElementById('webhookFormRow');
   if(webhookRow)webhookRow.style.display=currentRole==='admin'?'':'none';
@@ -1352,6 +1148,8 @@ function saveClient(){
     googleAdsId:document.getElementById('cf_google_ads_id').value.trim(),
     youtubeId:document.getElementById('cf_youtube_id').value.trim(),
     gaId:document.getElementById('cf_ga_id').value.trim(),
+    users:getClientUsersFromForm(),
+    linkedClients:getLinkedClientsSelection(),
     platforms:{...ptToggles},
     color:selectedColor
   };
@@ -1877,6 +1675,129 @@ function metricsCloseModal(){
   document.getElementById('metricsCampaignModal').style.display='none';
 }
 
+
+// ═══ MULTI-COMPANY CLIENT ACCESS ═══
+
+function renderLinkedClientsCheckboxes(currentClientId, linkedIds){
+  const clients=loadClients().filter(c=>c.id!==currentClientId);
+  const container=document.getElementById('linkedClientsCheckboxes');
+  if(!container) return;
+  if(clients.length===0){
+    container.innerHTML='<div style="font-size:12px;color:var(--text3);padding:4px;">No other clients available to link.</div>';
+    return;
+  }
+  container.innerHTML=clients.map(c=>`
+    <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 8px;border-radius:8px;transition:background 0.15s;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='transparent'">
+      <input type="checkbox" value="${c.id}" ${linkedIds.includes(c.id)?'checked':''} 
+             style="width:15px;height:15px;accent-color:var(--cyan);cursor:pointer;">
+      <div class="cs-avatar" style="width:28px;height:28px;border-radius:7px;font-size:12px;flex-shrink:0;background:${c.logo?'#fff':c.color};display:flex;align-items:center;justify-content:center;overflow:hidden;">
+        ${c.logo?`<img src="${c.logo}" style="width:100%;height:100%;object-fit:contain;">`:''}
+        ${!c.logo?c.name[0].toUpperCase():''}
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--text);">${c.name}</div>
+        <div style="font-size:10px;color:var(--text3);font-family:var(--mono);">${c.niche||'No niche set'}</div>
+      </div>
+    </label>
+  `).join('');
+}
+
+function getLinkedClientsSelection(){
+  const checkboxes=document.querySelectorAll('#linkedClientsCheckboxes input[type="checkbox"]');
+  return Array.from(checkboxes).filter(cb=>cb.checked).map(cb=>cb.value);
+}
+
+function togglePwdVisibility(fieldId, btn){
+  const field=document.getElementById(fieldId);
+  if(field.type==='password'){field.type='text';btn.textContent='Hide';}
+  else{field.type='password';btn.textContent='Show';}
+}
+
+// Add new client with empty credentials
+function initNewClientForm(){
+  initClientUsersTable([]);
+  const linkedSection=document.getElementById('linkedClientsSection');
+  if(linkedSection&&(currentRole==='admin'||currentRole==='subadmin')){
+    linkedSection.style.display='';
+    renderLinkedClientsCheckboxes('__new__',[]);
+  }
+}
+
+
+// ═══ CLIENT PORTAL USERS ═══
+
+function renderClientUsersTable(users){
+  const table = document.getElementById('clientUsersTable');
+  if(!table) return;
+  users = users || [];
+  if(users.length === 0){
+    table.innerHTML = `<div style="padding:12px;background:var(--bg3);border-radius:10px;border:1px dashed var(--border2);text-align:center;font-size:12px;color:var(--text3);">No users yet — click "+ Add User" to give someone portal access</div>`;
+    return;
+  }
+  table.innerHTML = users.map((u,i) => `
+    <div style="display:grid;grid-template-columns:1fr 1fr auto auto auto;gap:8px;align-items:center;padding:10px 12px;background:var(--bg3);border-radius:10px;border:1px solid var(--border);">
+      <input type="text" value="${u.name||''}" placeholder="Full name"
+        onchange="clientUserUpdate(${i},'name',this.value)"
+        style="padding:7px 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:12px;font-family:var(--sans);outline:none;">
+      <input type="email" value="${u.email||''}" placeholder="email@company.com"
+        onchange="clientUserUpdate(${i},'email',this.value)"
+        style="padding:7px 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:12px;font-family:var(--sans);outline:none;">
+      <select onchange="clientUserUpdate(${i},'role',this.value)"
+        style="padding:7px 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:12px;font-family:var(--sans);">
+        <option value="admin" ${u.role==='admin'?'selected':''}>Admin</option>
+        <option value="user" ${u.role==='user'?'selected':''}>User</option>
+      </select>
+      <div style="position:relative;display:flex;align-items:center;gap:4px;">
+        <input type="password" value="${u.password||''}" placeholder="Password" id="upwd_${i}"
+          onchange="clientUserUpdate(${i},'password',this.value)"
+          style="padding:7px 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:12px;font-family:var(--sans);outline:none;width:110px;">
+        <button type="button" onclick="togglePwdVisibility('upwd_${i}',this)"
+          style="padding:6px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:7px;color:var(--text3);font-size:10px;cursor:pointer;white-space:nowrap;">👁</button>
+      </div>
+      <button type="button" onclick="clientUserRemove(${i})"
+        style="padding:7px 10px;background:rgba(255,77,106,0.08);border:1px solid rgba(255,77,106,0.2);border-radius:8px;color:var(--red);font-size:12px;cursor:pointer;">✕</button>
+    </div>
+  `).join('');
+}
+
+let _editingClientUsers = [];
+
+function clientUserAddRow(){
+  _editingClientUsers.push({id:'u'+Date.now(),name:'',email:'',role:'user',password:'',linkedClients:[]});
+  renderClientUsersTable(_editingClientUsers);
+}
+
+function clientUserUpdate(idx, field, value){
+  if(_editingClientUsers[idx]) _editingClientUsers[idx][field]=value;
+}
+
+function clientUserRemove(idx){
+  _editingClientUsers.splice(idx,1);
+  renderClientUsersTable(_editingClientUsers);
+}
+
+function getClientUsersFromForm(){
+  return _editingClientUsers.map(u=>({...u}));
+}
+
+function initClientUsersTable(existingUsers){
+  _editingClientUsers = (existingUsers||[]).map(u=>({...u}));
+  renderClientUsersTable(_editingClientUsers);
+}
+
 </script>
+
+    <!-- COMPANY SELECTOR OVERLAY -->
+    <div id="companySelectOverlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);align-items:center;justify-content:center;">
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:36px 32px;max-width:500px;width:90%;text-align:center;">
+        <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--cyan),var(--purple));display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 16px;">🏢</div>
+        <h2 style="font-size:20px;font-weight:900;margin-bottom:6px;">Select Company</h2>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:28px;">You have access to multiple companies. Choose which one to open.</p>
+        <div id="companySelectorGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;"></div>
+        <button onclick="document.getElementById('companySelectOverlay').style.display='none';pendingLoginAccount=null;" 
+                style="margin-top:20px;padding:10px 24px;background:transparent;border:1px solid var(--border2);border-radius:10px;color:var(--text2);font-size:13px;cursor:pointer;">Cancel</button>
+      </div>
+    </div>
+
 </body>
 </html>
