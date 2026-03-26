@@ -923,14 +923,15 @@ function selectCompanyAndLogin(clientId){
 function completLogin(account, clientId){
   setTimeout(()=>{
     document.getElementById('loginScreen').classList.add('hidden');
-    document.getElementById('mainApp').classList.remove('hidden');
-  },200);
-  applyRole(account.role);
-  if(clientId) setActiveClient(clientId);
-  else if(loadClients().length>0) setActiveClient(loadClients()[0].id);
-  showToast('Welcome, '+account.name+'!','success');
-  renderClientsGrid();
-  switchPage('dashboard');
+    document.getElementById('appContainer').classList.add('active');
+    applyRole(account.role);
+    if(clientId) setActiveClient(clientId);
+    else if(loadClients().length>0) setActiveClient(loadClients()[0].id);
+    updateClientUI();
+    renderClientsGrid();
+    switchPage('dashboard');
+    showToast('Welcome, '+account.name+'!','success');
+  },400);
 }
 function handleLogout(){
   document.getElementById('appContainer').classList.remove('active');
