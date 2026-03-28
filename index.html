@@ -628,6 +628,93 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         </div>
       </div>
 
+      <!-- SOCIAL POSTING IDs — Admin/Subadmin only -->
+      <div id="socialPostingSection" style="margin-bottom:14px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--purple);margin-bottom:8px;margin-top:4px;" id="socialPostingLabel">
+          📲 Social Posting IDs <span style="font-size:9px;font-weight:700;color:var(--purple);background:rgba(155,109,255,0.1);border:1px solid rgba(155,109,255,0.2);padding:2px 6px;border-radius:4px;margin-left:4px;">Admin Only</span>
+        </div>
+        <div class="form-row" id="socialPostingRow1">
+          <div class="form-field">
+            <label>📘 Facebook Page ID</label>
+            <input type="text" class="form-input" id="cf_fb_page_id" placeholder="e.g. 123456789012345" style="padding:10px 13px;font-size:11px;font-family:'SF Mono','Fira Code',monospace;">
+          </div>
+          <div class="form-field">
+            <label>📸 Instagram Business Account ID</label>
+            <input type="text" class="form-input" id="cf_ig_account_id" placeholder="e.g. 17841400000000000" style="padding:10px 13px;font-size:11px;font-family:'SF Mono','Fira Code',monospace;">
+          </div>
+        </div>
+        <div class="form-row" id="socialPostingRow2">
+          <div class="form-field">
+            <label>🎵 TikTok Handle / Account ID</label>
+            <input type="text" class="form-input" id="cf_tt_handle" placeholder="@username or account ID" style="padding:10px 13px;font-size:11px;font-family:'SF Mono','Fira Code',monospace;">
+          </div>
+          <div class="form-field">
+            <label>💼 LinkedIn Page ID</label>
+            <input type="text" class="form-input" id="cf_li_page_id" placeholder="e.g. urn:li:company:123" style="padding:10px 13px;font-size:11px;font-family:'SF Mono','Fira Code',monospace;">
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--text3);margin-top:6px;line-height:1.6;">
+          💡 These IDs are sent to MAYO Engine on every post — no need to enter them in n8n separately.
+        </div>
+      </div>
+
+      <!-- TELEGRAM CONFIG — Admin/Subadmin only -->
+      <div id="telegramSection" style="margin-bottom:14px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--cyan);margin-bottom:8px;margin-top:4px;" id="telegramSectionLabel">
+          ✈️ Telegram Config <span style="font-size:9px;font-weight:700;color:var(--cyan);background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.2);padding:2px 6px;border-radius:4px;margin-left:4px;">Admin Only</span>
+        </div>
+        <div class="form-row" id="telegramRow">
+          <div class="form-field">
+            <label>🤖 Telegram Bot Token</label>
+            <input type="text" class="form-input" id="cf_tg_bot_token" placeholder="1234567890:ABCDEFabcdef..." style="padding:10px 13px;font-size:11px;font-family:'SF Mono','Fira Code',monospace;">
+          </div>
+          <div class="form-field">
+            <label>💬 Telegram Chat ID</label>
+            <input type="text" class="form-input" id="cf_tg_chat_id" placeholder="-1001234567890" style="padding:10px 13px;font-size:11px;font-family:'SF Mono','Fira Code',monospace;">
+          </div>
+        </div>
+        <!-- Setup Instructions -->
+        <div style="margin-top:10px;background:var(--bg3);border-radius:10px;padding:14px;border:1px solid var(--border);">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--cyan);font-family:var(--mono);margin-bottom:10px;">📡 Telegram Webhook Setup</div>
+          
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <!-- Step 1 -->
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--cyan);font-family:var(--mono);margin-bottom:6px;">1. Register Telegram Webhook</div>
+              <div style="font-size:11px;color:var(--text2);margin-bottom:6px;">Replace BOT_TOKEN and WEBHOOK_ID with client values then run in terminal:</div>
+              <div style="background:var(--void);border-radius:8px;padding:10px;font-family:'SF Mono','Fira Code',monospace;font-size:11px;color:var(--green);word-break:break-all;line-height:1.6;">
+                curl "https://api.telegram.org/bot<span style="color:var(--amber);">{BOT_TOKEN}</span>/setWebhook?url=https://n8n.srv803590.hstgr.cloud/webhook/<span style="color:var(--amber);">{WEBHOOK_ID}</span>/webhook"
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--cyan);font-family:var(--mono);margin-bottom:6px;">2. Verify Webhook Registered</div>
+              <div style="background:var(--void);border-radius:8px;padding:10px;font-family:'SF Mono','Fira Code',monospace;font-size:11px;color:var(--green);word-break:break-all;">
+                curl "https://api.telegram.org/bot<span style="color:var(--amber);">{BOT_TOKEN}</span>/getWebhookInfo"
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--cyan);font-family:var(--mono);margin-bottom:8px;">3. MAYO Engine Workflow Checklist</div>
+              <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--text2);">
+                <div>◯ Clone ROOFNation workflow in MAYO Engine</div>
+                <div>◯ Update FB_ACCOUNT ID in Prepare Post Data node</div>
+                <div>◯ Update IG_ACCOUNT ID in Prepare Post Data node</div>
+                <div>◯ Update HGH Location ID in POST Now + POST Scheduled URLs</div>
+                <div>◯ Update Telegram credential to client bot token</div>
+                <div>◯ Apply GPT-4 caption fix <span style="color:var(--green);font-family:monospace;">output[0].content[0].text</span></div>
+                <div>◯ Activate workflow in MAYO Engine</div>
+                <div>◯ Register webhook via curl command above</div>
+                <div>◯ Test with Telegram command from client group</div>
+                <div>◯ Add webhook URL to client profile in MAYO</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- CONNECTED PLATFORMS -->
       <div style="margin-bottom:14px;">
         <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:8px;">Connected Platforms</div>
@@ -734,7 +821,7 @@ let editingClientId=null;
 let ptToggles={fb:true,ig:true,tt:false,li:false};
 let selectedColor='#9B6DFF';
 const COLORS=['#9B6DFF','#00D4FF','#E040FB','#00E5A0','#FFB800','#FF4D6A','#4F46E5','#EC4899','#F97316','#06B6D4'];
-const DEFAULT_CLIENTS=[{id:'c1',name:'Shot Doctor',niche:'Sports & Fitness',hghId:'angLr7uC9e5yltccWprT',logo:'',webhook:'',fbAdId:'',googleAdsId:'',youtubeId:'',gaId:'',platforms:{fb:true,ig:true,tt:false,li:false},color:'#9B6DFF',clientEmail:'shotdoctor@client.com',clientPassword:'',linkedClients:[],users:[]}];
+const DEFAULT_CLIENTS=[{id:'c1',name:'Shot Doctor',niche:'Sports & Fitness',hghId:'angLr7uC9e5yltccWprT',logo:'',webhook:'https://n8n.srv803590.hstgr.cloud/webhook/36a4e946-67ac-46d9-8f81-fa0e2235c4c2/webhook',fbAdId:'',googleAdsId:'',youtubeId:'',gaId:'',tgBotToken:'8747832521:AAFen_J2l2aZplknX3eA51J5OSE_9K0MY6w',tgChatId:'',platforms:{fb:true,ig:true,tt:false,li:false},color:'#9B6DFF',clientEmail:'shotdoctor@client.com',clientPassword:'',linkedClients:[],users:[]}];
 
 // THEME
 function setLogoForTheme(isDark){
@@ -1073,13 +1160,24 @@ function openAddForm(){
   document.getElementById('cf_ga_id').value='';
   document.getElementById('cf_logo_preview').innerHTML='<span style="font-size:11px;color:var(--text3);">Enter URL to preview</span>';
   const webhookRow=document.getElementById('webhookFormRow');
-  if(webhookRow)webhookRow.style.display=currentRole==='admin'?'':'none';
+  if(webhookRow)webhookRow.style.display=(currentRole==='admin'||currentRole==='subadmin')?'':'none';
   const adLabel=document.getElementById('adPlatformsLabel');
   const adRow1=document.getElementById('adPlatformsRow1');
   const adRow2=document.getElementById('adPlatformsRow2');
-  if(adLabel)adLabel.style.display=currentRole==='admin'?'':'none';
-  if(adRow1)adRow1.style.display=currentRole==='admin'?'':'none';
-  if(adRow2)adRow2.style.display=currentRole==='admin'?'':'none';
+  const canSeeAds=currentRole==='admin'||currentRole==='subadmin';
+  if(adLabel)adLabel.style.display=canSeeAds?'':'none';
+  if(adRow1)adRow1.style.display=canSeeAds?'':'none';
+  if(adRow2)adRow2.style.display=canSeeAds?'':'none';
+  const spLabel=document.getElementById('socialPostingLabel');
+  const spRow1=document.getElementById('socialPostingRow1');
+  const spRow2=document.getElementById('socialPostingRow2');
+  if(spLabel)spLabel.style.display=canSeeAds?'':'none';
+  if(spRow1)spRow1.style.display=canSeeAds?'':'none';
+  if(spRow2)spRow2.style.display=canSeeAds?'':'none';
+  const tgLabel=document.getElementById('telegramSectionLabel');
+  const tgRow=document.getElementById('telegramRow');
+  const tgSection=document.getElementById('telegramSection');
+  if(tgSection)tgSection.style.display=canSeeAds?'':'none';
   ptToggles={fb:true,ig:true,tt:false,li:false};updatePT();
   selectedColor=COLORS[0];renderColors();
   document.getElementById('clientListView').style.display='none';
@@ -1100,6 +1198,13 @@ function editClient(id){
   document.getElementById('cf_google_ads_id').value=c.googleAdsId||'';
   document.getElementById('cf_youtube_id').value=c.youtubeId||'';
   document.getElementById('cf_ga_id').value=c.gaId||'';
+  // Social posting IDs
+  document.getElementById('cf_fb_page_id').value=c.fbPageId||'';
+  document.getElementById('cf_ig_account_id').value=c.igAccountId||'';
+  document.getElementById('cf_tt_handle').value=c.ttHandle||'';
+  document.getElementById('cf_li_page_id').value=c.liPageId||'';
+  document.getElementById('cf_tg_bot_token').value=c.tgBotToken||'';
+  document.getElementById('cf_tg_chat_id').value=c.tgChatId||'';
   // Client portal users
   initClientUsersTable(c.users||[]);
   // Linked companies checkboxes — only for admin/subadmin
@@ -1113,13 +1218,24 @@ function editClient(id){
   if(c.logo){preview.innerHTML='<img src="'+c.logo+'" style="max-height:40px;max-width:100%;object-fit:contain;">';}
   else{preview.innerHTML='<span style="font-size:11px;color:var(--text3);">Enter URL to preview</span>';}
   const webhookRow=document.getElementById('webhookFormRow');
-  if(webhookRow)webhookRow.style.display=currentRole==='admin'?'':'none';
+  if(webhookRow)webhookRow.style.display=(currentRole==='admin'||currentRole==='subadmin')?'':'none';
   const adLabel=document.getElementById('adPlatformsLabel');
   const adRow1=document.getElementById('adPlatformsRow1');
   const adRow2=document.getElementById('adPlatformsRow2');
-  if(adLabel)adLabel.style.display=currentRole==='admin'?'':'none';
-  if(adRow1)adRow1.style.display=currentRole==='admin'?'':'none';
-  if(adRow2)adRow2.style.display=currentRole==='admin'?'':'none';
+  const canSeeAds=currentRole==='admin'||currentRole==='subadmin';
+  if(adLabel)adLabel.style.display=canSeeAds?'':'none';
+  if(adRow1)adRow1.style.display=canSeeAds?'':'none';
+  if(adRow2)adRow2.style.display=canSeeAds?'':'none';
+  const spLabel=document.getElementById('socialPostingLabel');
+  const spRow1=document.getElementById('socialPostingRow1');
+  const spRow2=document.getElementById('socialPostingRow2');
+  if(spLabel)spLabel.style.display=canSeeAds?'':'none';
+  if(spRow1)spRow1.style.display=canSeeAds?'':'none';
+  if(spRow2)spRow2.style.display=canSeeAds?'':'none';
+  const tgLabel=document.getElementById('telegramSectionLabel');
+  const tgRow=document.getElementById('telegramRow');
+  const tgSection=document.getElementById('telegramSection');
+  if(tgSection)tgSection.style.display=canSeeAds?'':'none';
   ptToggles={fb:c.platforms?.fb??true,ig:c.platforms?.ig??true,tt:c.platforms?.tt??false,li:c.platforms?.li??false};updatePT();
   selectedColor=c.color||COLORS[0];renderColors();
   document.getElementById('clientListView').style.display='none';
@@ -1145,6 +1261,12 @@ function saveClient(){
     hghId:document.getElementById('cf_hghid').value.trim(),
     logo:document.getElementById('cf_logo').value.trim(),
     webhook:document.getElementById('cf_webhook').value.trim(),
+    fbPageId:document.getElementById('cf_fb_page_id').value.trim(),
+    igAccountId:document.getElementById('cf_ig_account_id').value.trim(),
+    ttHandle:document.getElementById('cf_tt_handle').value.trim(),
+    liPageId:document.getElementById('cf_li_page_id').value.trim(),
+    tgBotToken:document.getElementById('cf_tg_bot_token').value.trim(),
+    tgChatId:document.getElementById('cf_tg_chat_id').value.trim(),
     fbAdId:document.getElementById('cf_fb_ad_id').value.trim(),
     googleAdsId:document.getElementById('cf_google_ads_id').value.trim(),
     youtubeId:document.getElementById('cf_youtube_id').value.trim(),
@@ -1256,7 +1378,7 @@ function simulatePost(){
   const c=getActiveClient();
   const webhookUrl=c.webhook||localStorage.getItem('mayo_webhook')||'';
   const activePlats=Object.entries(c.platforms||{}).filter(([,v])=>v).map(([k])=>({fb:'facebook',ig:'instagram',tt:'tiktok',li:'linkedin'}[k])).filter(Boolean);
-  const payload={client_name:c.name,hgh_id:c.hghId,niche:c.niche,platform:selectedPlatform,active_platforms:activePlats,caption:lastCaption,command,timestamp:new Date().toISOString()};
+  const payload={client_name:c.name,hgh_id:c.hghId,niche:c.niche,platform:selectedPlatform,active_platforms:activePlats,caption:lastCaption,command,fb_page_id:c.fbPageId||'',ig_account_id:c.igAccountId||'',tt_handle:c.ttHandle||'',li_page_id:c.liPageId||'',fb_ad_id:c.fbAdId||'',google_ads_id:c.googleAdsId||'',youtube_id:c.youtubeId||'',tg_bot_token:c.tgBotToken||'',tg_chat_id:c.tgChatId||'',timestamp:new Date().toISOString()};
   console.log('📤 Sending to:',(webhookUrl||'NO WEBHOOK SET'));
   console.log('📤 n8n Payload:',JSON.stringify(payload,null,2));
   if(!webhookUrl){showToast('⚠ No webhook set for '+c.name+' — add one in Clients → Edit','error');document.getElementById('processingOverlay').classList.remove('active');return;}
